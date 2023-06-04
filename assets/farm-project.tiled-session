@@ -1,3 +1,76 @@
 {
-    "last.imagePath": "C:/Users/Cheor/Downloads"
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map02.json",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "#tilemap1": {
+            "scaleInDock": 1
+        },
+        "map01.json": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 807,
+                "y": 283
+            }
+        },
+        "map01.json#tilemap2": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map01.tmj": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 400.75,
+                "y": 218.5
+            }
+        },
+        "map01.tmj#tilemap2": {
+            "scaleInDock": 1
+        },
+        "map02.json": {
+            "scale": 1.9158333333333333,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 393.0404523705959,
+                "y": 281.33971291866027
+            }
+        },
+        "map02.json#tilemap": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/Cheor/OneDrive/Documentos/CMPM120/GraveFireflies/assets",
+    "map.height": 30,
+    "map.lastUsedFormat": "json",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+        "map02.json"
+    ],
+    "project": "farm-project.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "map02.json"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.transparentColor": "#000000",
+    "tileset.useTransparentColor": true
 }

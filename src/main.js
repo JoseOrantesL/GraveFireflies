@@ -8,11 +8,11 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true
+            debug: false
         }
     },
     zoom: 2,
-    scene: [ FarmerDodge ]
+    scene: [EscapeDodge, FarmerDodge ]
 }
 
 const game = new Phaser.Game(config)

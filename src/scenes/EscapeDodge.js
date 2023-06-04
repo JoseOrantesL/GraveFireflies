@@ -35,17 +35,9 @@ class EscapeDodge extends Phaser.Scene {
 
         this.seita = this.physics.add.sprite(50, 400, 'player', 0);
         
-       // this.check = this.add.rectangle(520, 0, 100, 5, 0xFFFFFF).setOrigin(0,0);
-
-
-        //this.physics.add.existing(this.check);
-
-        //this.check.body.collideWorldBounds = true;
-
-        //this.check.body.onCollide = true;
         this.anims.create ({
             key: 'stand',
-            frameRate: 8,
+            frameRate: 1,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('player', {
                 start: 0,
@@ -55,7 +47,7 @@ class EscapeDodge extends Phaser.Scene {
 
         this.anims.create ({
             key: 'run',
-            frameRate: 8,
+            frameRate: 1,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('player', {
                 start: 1,
@@ -80,7 +72,6 @@ class EscapeDodge extends Phaser.Scene {
 
         this.seita.body.onCollide = true;
         this.seita.body.OnWorldBounds = true;
-        //this.seita.body.setCollideWorldBounds(true);
         
 
         //Collision checks
@@ -115,14 +106,13 @@ class EscapeDodge extends Phaser.Scene {
         if(this.cursors.left.isDown){
             this.seita.setFlip(true, false);
             this.direction.x = -1
-            this.seita.flipX = true;
+            //this.seita.flipX = true;
             this.seita.play("run"); 
 
         } else if(this.cursors.right.isDown){
             this.seita.resetFlip();
             this.direction.x = 1;
             this.seita.play("run"); 
-
         }
 
         if(this.cursors.up.isDown){

@@ -40,7 +40,7 @@ class FarmerDodge extends Phaser.Scene {
         
 
         this.anims.create ({
-            key: 'stand',
+            key: 'stand2',
             frameRate: 8,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('seita', {
@@ -50,7 +50,7 @@ class FarmerDodge extends Phaser.Scene {
         })
 
         this.anims.create ({
-            key: 'run',
+            key: 'run2',
             frameRate: 8,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('seita', {
@@ -62,7 +62,7 @@ class FarmerDodge extends Phaser.Scene {
         this.fire = this.physics.add.sprite(150, 100, 'fire', 0);
 
         this.anims.create ({
-            key: 'fire1',
+            key: 'fire2',
             frameRate: 15,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('fire', {
@@ -72,7 +72,7 @@ class FarmerDodge extends Phaser.Scene {
         })
 
         
-        this.fire.play('fire1');
+        this.fire.play('fire2');
 
         this.seita.body.onCollide = true;
 
@@ -121,27 +121,27 @@ class FarmerDodge extends Phaser.Scene {
             this.seita.setFlip(true, false);
             this.direction.x = -1
             this.seita.flipX = true;
-            this.seita.play("run"); 
+            this.seita.play("run2"); 
 
         } else if(this.cursors.right.isDown){
             this.seita.resetFlip();
             this.direction.x = 1;
-            this.seita.play("run"); 
+            this.seita.play("run2"); 
 
         }
 
         if(this.cursors.up.isDown){
 
             this.direction.y = -1
-            this.seita.play("run");  
+            this.seita.play("run2");  
 
         } else if(this.cursors.down.isDown){
 
             this.direction.y = 1;
-            this.seita.play("run"); 
+            this.seita.play("run2"); 
 
         } else {
-            this.seita.play("stand");
+            this.seita.play("stand2");
         }
 
         this.direction.normalize();

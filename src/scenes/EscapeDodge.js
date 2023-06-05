@@ -71,6 +71,7 @@ class EscapeDodge extends Phaser.Scene {
         this.fire.play('fire1');
 
         this.seita.body.onCollide = true;
+        this.fire.body.onCollide= true;
         this.seita.body.OnWorldBounds = true;
         
 
@@ -80,12 +81,15 @@ class EscapeDodge extends Phaser.Scene {
         houses.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.seita, fence);
         this.physics.add.collider(this.seita, houses);
-        this.physics.add.collider(this.seita, this.check);
+        this.physics.add.collider(this.seita, this.fire);
+        this.fire.setImmovable(true)
         
         
-        this.physics.collide(this.seita, this.check, () => {
-            console.log('Hit world')
-        }, null, this)
+        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
+            {
+                console.log("inside log");
+                this.scene.start("gameOverScene")
+            });
 
         this.cameras.main.setBounds(0,0, map1.widthInPixels, map1.heightInPixels);
         this.cameras.main.startFollow(this.seita, true, 0.25,0.25)

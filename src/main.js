@@ -12,7 +12,8 @@ let config = {
         }
     },
     zoom: 2,
-    scene: [EscapeDodge, FarmerDodge ]
+    scene: [EscapeDodge, FarmerDodge, GameOver]
 }
 
 const game = new Phaser.Game(config)
+let keyR;

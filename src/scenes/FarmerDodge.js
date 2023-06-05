@@ -101,7 +101,6 @@ class FarmerDodge extends Phaser.Scene {
                     this.texty.visible = false
                 })
             });
-            
         this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.seita, true, 0.25,0.25)
 

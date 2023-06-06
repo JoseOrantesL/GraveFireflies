@@ -83,7 +83,11 @@ class EscapeDodge extends Phaser.Scene {
         this.physics.add.collider(this.seita, fence);
         this.physics.add.collider(this.seita, houses);
         this.physics.add.collider(this.seita, this.check);
-
+        this.physics.add.collider(this.seita, this.fire);
+        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
+        {
+            this.scene.start('gameOverScene')
+        });
         //Setup camera to follow the player
         this.cameras.main.setBounds(0,0, map1.widthInPixels, map1.heightInPixels);
         this.cameras.main.startFollow(this.seita, true, 0.25,0.25)

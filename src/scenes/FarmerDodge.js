@@ -10,15 +10,11 @@ class FarmerDodge extends Phaser.Scene {
     preload(){
         this.load.path = "./assets/";
         this.load.spritesheet('seita', 'seita.png', {
-            frameWidth: 9,
+            frameWidth: 8,
             frameHeight: 16
         });
         this.load.image('setsuko', 'setsuko.png')
         this.load.image('tilemapImage', 'tilemap2.png');
-        this.load.spritesheet('fire', 'fire.png', {
-            frameHeight: 20,
-            frameWidth: 20
-        });
 
         this.load.tilemapTiledJSON('JSONmap', 'map02.json');
 
@@ -55,10 +51,9 @@ class FarmerDodge extends Phaser.Scene {
         this.anims.create ({
             key: 'run2',
             frameRate: 8,
-            repeat: -1,
             frames: this.anims.generateFrameNumbers('seita', {
                 start: 1,
-                end: 2
+                end: 0
             })
         })
         
@@ -118,10 +113,10 @@ class FarmerDodge extends Phaser.Scene {
         if(this.cursors.left.isDown){
             this.seita.setFlip(true, false);
             this.direction.x = -1
-            this.seita.flipX = true;
+            //this.seita.flipX = true;
             this.seita.play("run2"); 
-
-        } else if(this.cursors.right.isDown){
+        }
+        if(this.cursors.right.isDown){
             this.seita.resetFlip();
             this.direction.x = 1;
             this.seita.play("run2"); 
@@ -133,14 +128,15 @@ class FarmerDodge extends Phaser.Scene {
             this.direction.y = -1
             this.seita.play("run2");  
 
-        } else if(this.cursors.down.isDown){
+        } 
+        if(this.cursors.down.isDown){
 
             this.direction.y = 1;
             this.seita.play("run2"); 
 
-        } else {
-            this.seita.play("stand2");
         }
+        
+
 
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)

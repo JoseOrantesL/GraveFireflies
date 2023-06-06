@@ -26,6 +26,7 @@ class FarmerDodge extends Phaser.Scene {
 
     create(){
 
+        //Create Tilemap layers
         const map = this.add.tilemap('JSONmap');
         const tileset = map.addTilesetImage('tilemap', 'tilemapImage');
 
@@ -34,11 +35,13 @@ class FarmerDodge extends Phaser.Scene {
         const trees = map.createLayer('Trees', tileset, 0,0).setDepth(10);
         const crops = map.createLayer('Crops', tileset, 0,0);
 
+
+        //add sprites
         this.seita = this.physics.add.sprite(32,32, 'seita', 0);
         this.setsuko = this.physics.add.sprite(100, 100, 'setsuko',0)
 
         
-
+        //create running animations
         this.anims.create ({
             key: 'stand2',
             frameRate: 8,
@@ -58,27 +61,16 @@ class FarmerDodge extends Phaser.Scene {
                 end: 2
             })
         })
-
-        this.fire = this.physics.add.sprite(150, 100, 'fire', 0);
-
-        this.anims.create ({
-            key: 'fire2',
-            frameRate: 15,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers('fire', {
-                start: 0,
-                end: 1
-            })
-        })
-
         
-        this.fire.play('fire2');
-
+        //turn on collisions with background and other sprites
         this.seita.body.onCollide = true;
-
         this.seita.body.setCollideWorldBounds(true);
         this.setsuko.body.setCollideWorldBounds(true)
+
+        //set NPC sprites to immovable
         this.setsuko.setImmovable(true)
+
+
         //Collision checks
         decorations.setCollisionByProperty({collides: true});
         trees.setCollisionByProperty({collides: true});
@@ -88,10 +80,11 @@ class FarmerDodge extends Phaser.Scene {
         this.physics.add.collider(this.seita, crops);
         this.physics.add.collider(this.seita, this.setsuko)
 
+
+        //add tooltip for NPC interactions
         this.texty = this.add.text(100, 70, 'Press e', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
         this.texty.visible = false
-
-        this.physics.world.collide(this.seita, this.setsuko, this.collisionHappened, null, this);
+        
         this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
             {
                 console.log("inside log");
@@ -101,19 +94,25 @@ class FarmerDodge extends Phaser.Scene {
                     this.texty.visible = false
                 })
             });
+        
+        //Make camera follow player
         this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.seita, true, 0.25,0.25)
 
         this.physics.world.bounds.setTo(0,0, map.widthInPixels, map.heightInPixels);
 
+
+        //allow keyboard input
         this.cursors = this.input.keyboard.createCursorKeys();
 
     }
 
     update(){
-
+        //prevent NPC sprites from moving at all
         this.setsuko.setVelocity(0,0);
         
+
+        //Player movement
         this.direction = new Phaser.Math.Vector2(0);
 
         if(this.cursors.left.isDown){
@@ -146,16 +145,6 @@ class FarmerDodge extends Phaser.Scene {
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
     }
-
-    collisionHappened(){
-
-        console.log("inside");
-        this.texty.visible = true
-
-            this.time.delayedCall(1000, ()=>{
-            this.texty.visible = false
-        })
-    };
     
     
 }

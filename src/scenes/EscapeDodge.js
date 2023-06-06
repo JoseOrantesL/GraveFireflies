@@ -21,7 +21,10 @@ class EscapeDodge extends Phaser.Scene {
         });
 
         this.load.tilemapTiledJSON('JSONmap1', 'map01.json');
-
+        this.load.spritesheet('bomb', 'bomb.png',{
+            frameWidth: 15,
+            frameHeight: 7
+        });
     }
 
     create(){
@@ -38,8 +41,9 @@ class EscapeDodge extends Phaser.Scene {
         //Adding the player character to the scene
         this.seita = this.physics.add.sprite(50, 400, 'player', 0);
 
-        //Fire setup
+        //Hazard setup
         this.fire = this.physics.add.sprite(150, 100, 'fire', 0);
+        this.bomb = this.physics.add.sprite(70, 400, 'bomb',0)
         
         //Animation setup
         this.anims.create ({
@@ -71,7 +75,17 @@ class EscapeDodge extends Phaser.Scene {
             })
         })
 
+        this.anims.create ({
+            key: 'bomb',
+            frameRate: 0.7,
+            frames: this.anims.generateFrameNumbers('bomb', {
+                start: 0,
+                end: 2
+            })
+        })
+
         this.fire.play('fire1');
+        this.bomb.play('bomb')
         
         
 
@@ -142,4 +156,9 @@ class EscapeDodge extends Phaser.Scene {
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
     }
   
+
+    //spawn bombs randomly around the screen at coord bx, by
+    spawnBomb(bx,by){
+        
+    }
 }

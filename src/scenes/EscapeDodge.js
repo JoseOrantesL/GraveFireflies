@@ -25,19 +25,26 @@ class EscapeDodge extends Phaser.Scene {
     }
 
     create(){
-
+        //Connecting the tilemap to the JSON file
         const map1 = this.add.tilemap('JSONmap1');
         const tileset1 = map1.addTilesetImage('tilemap2', 'tilemapImage1');
 
+        //Creating the layers for the tilemap
         const background = map1.createLayer('Background', tileset1, 0,0);
         const fence = map1.createLayer('Fence', tileset1, 0,0)
         const houses = map1.createLayer('Houses', tileset1, 0,0)
 
+
+        //Adding the player character to the scene
         this.seita = this.physics.add.sprite(50, 400, 'player', 0);
+
+        //Fire setup
+        this.fire = this.physics.add.sprite(150, 100, 'fire', 0);
         
+        //Animation setup
         this.anims.create ({
             key: 'stand',
-            frameRate: 1,
+            frameRate: 8,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('player', {
                 start: 0,
@@ -47,15 +54,13 @@ class EscapeDodge extends Phaser.Scene {
 
         this.anims.create ({
             key: 'run',
-            frameRate: 1,
+            frameRate: 8,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('player', {
                 start: 1,
                 end: 2
             })
         })
-
-        this.fire = this.physics.add.sprite(150, 100, 'fire', 0);
 
         this.anims.create ({
             key: 'fire1',
@@ -67,30 +72,20 @@ class EscapeDodge extends Phaser.Scene {
             })
         })
 
-        
         this.fire.play('fire1');
-
-        this.seita.body.onCollide = true;
-        this.fire.body.onCollide= true;
-        this.seita.body.OnWorldBounds = true;
+        //this.seita.body.setCollideWorldBounds(true);
         
 
         //Collision checks
-        
+        this.seita.body.onCollide = true;
+        this.seita.body.OnWorldBounds = true;
         fence.setCollisionByProperty({collides: true});
         houses.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.seita, fence);
         this.physics.add.collider(this.seita, houses);
-        this.physics.add.collider(this.seita, this.fire);
-        this.fire.setImmovable(true)
-        
-        
-        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
-            {
-                console.log("inside log");
-                this.scene.start("gameOverScene")
-            });
+        this.physics.add.collider(this.seita, this.check);
 
+        //Setup camera to follow the player
         this.cameras.main.setBounds(0,0, map1.widthInPixels, map1.heightInPixels);
         this.cameras.main.startFollow(this.seita, true, 0.25,0.25)
 
@@ -102,21 +97,25 @@ class EscapeDodge extends Phaser.Scene {
 
     update(){
         
+        //Check whenever the player collides with the world bounds to start scene #2 
         if(this.seita.body.checkWorldBounds()){
             this.scene.start('dodgeScene');
         }
+
+        //Movement setup and adaptation
         this.direction = new Phaser.Math.Vector2(0);
 
         if(this.cursors.left.isDown){
             this.seita.setFlip(true, false);
             this.direction.x = -1
-            //this.seita.flipX = true;
+            this.seita.flipX = true;
             this.seita.play("run"); 
 
         } else if(this.cursors.right.isDown){
             this.seita.resetFlip();
             this.direction.x = 1;
             this.seita.play("run"); 
+
         }
 
         if(this.cursors.up.isDown){
@@ -132,7 +131,7 @@ class EscapeDodge extends Phaser.Scene {
         } else {
             this.seita.play("stand");
         }
-
+        
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
     }

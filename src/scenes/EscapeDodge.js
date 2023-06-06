@@ -55,10 +55,9 @@ class EscapeDodge extends Phaser.Scene {
         this.anims.create ({
             key: 'run',
             frameRate: 8,
-            repeat: -1,
             frames: this.anims.generateFrameNumbers('player', {
                 start: 1,
-                end: 2
+                end: 0
             })
         })
 
@@ -73,7 +72,7 @@ class EscapeDodge extends Phaser.Scene {
         })
 
         this.fire.play('fire1');
-        //this.seita.body.setCollideWorldBounds(true);
+        
         
 
         //Collision checks
@@ -106,32 +105,35 @@ class EscapeDodge extends Phaser.Scene {
         this.direction = new Phaser.Math.Vector2(0);
 
         if(this.cursors.left.isDown){
+            this.seita.play("run"); 
             this.seita.setFlip(true, false);
             this.direction.x = -1
             this.seita.flipX = true;
-            this.seita.play("run"); 
+            
 
-        } else if(this.cursors.right.isDown){
+        } 
+        
+        if(this.cursors.right.isDown){
+
+            this.seita.play("run");
             this.seita.resetFlip();
             this.direction.x = 1;
-            this.seita.play("run"); 
-
-        }
-
+        
+        } 
+        
         if(this.cursors.up.isDown){
 
             this.direction.y = -1
             this.seita.play("run");  
 
-        } else if(this.cursors.down.isDown){
+        }
+        if(this.cursors.down.isDown){
 
             this.direction.y = 1;
             this.seita.play("run"); 
 
-        } else {
-            this.seita.play("stand");
         }
-        
+
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
     }

@@ -8,7 +8,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     },
     zoom: 2,
@@ -18,3 +18,9 @@ let config = {
 const game = new Phaser.Game(config)
 let keyR;
 let dimensions = 200;
+let textConfig = {
+    fontFamily: 'Poppins',
+    fontSize: '15px',
+    align: 'right',
+    
+}

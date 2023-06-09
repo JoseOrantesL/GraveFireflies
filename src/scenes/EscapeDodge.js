@@ -162,10 +162,14 @@ class EscapeDodge extends Phaser.Scene {
     }
   
 
-    //spawn bombs randomly around the screen at coord bx, by
+    //spawn bombs randomly around the screen
     spawnBomb(){
         this.bomb = this.physics.add.sprite(this.bombx, this.bomby, 'bomb', 0)
         this.bomb.play('bomb')
+
+        this.bomb.on('animationcomplete', ()=>{
+            this.bomb.destroy();
+        });
 
         this.bombx = Phaser.Math.Between(1,630)
         this.bomby = Phaser.Math.Between(1,450)

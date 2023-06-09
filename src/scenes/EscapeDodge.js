@@ -3,8 +3,6 @@ class EscapeDodge extends Phaser.Scene {
         super("escapeScene");
 
         this.VEL = 100;
-
-
     }
 
     preload(){
@@ -21,7 +19,10 @@ class EscapeDodge extends Phaser.Scene {
         });
 
         this.load.tilemapTiledJSON('JSONmap1', 'map01.json');
-
+        this.load.spritesheet('bomb', 'bomb.png',{
+            frameWidth: 15,
+            frameHeight: 8
+        });
     }
 
     create(){
@@ -38,7 +39,7 @@ class EscapeDodge extends Phaser.Scene {
         //Adding the player character to the scene
         this.seita = this.physics.add.sprite(50, 400, 'player', 0);
 
-        //Fire setup
+        //Hazard setup
         this.fire = this.physics.add.sprite(150, 100, 'fire', 0);
         
         //Animation setup
@@ -71,9 +72,20 @@ class EscapeDodge extends Phaser.Scene {
             })
         })
 
+        this.anims.create ({
+            key: 'bomb',
+            frameRate: 0.7,
+            frames: this.anims.generateFrameNumbers('bomb', {
+                start: 0,
+                end: 2
+            })
+        })
+
         this.fire.play('fire1');
         
-        
+        //initialize bomb spawn coords
+        this.bombx = 70
+        this.bomby = 400
 
         //Collision checks
         this.seita.body.onCollide = true;
@@ -97,10 +109,15 @@ class EscapeDodge extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        this.time.addEvent({delay:1000, callback: this.spawnBomb, callbackScope:this, loop:true})
+    
     }
 
     update(){
-        
+        //this.time.addEvent({delay:2000, callback: this.spawnBomb(this.bombx, this.bomby), callbackScope:this, repeat:-1})
+
+        //setInterval(this.spawnBomb(this.bombx, this.bomby), 20000)
+
         //Check whenever the player collides with the world bounds to start scene #2 
         if(this.seita.body.checkWorldBounds()){
             this.scene.start('dodgeScene');
@@ -141,6 +158,18 @@ class EscapeDodge extends Phaser.Scene {
 
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
+
+
     }
   
+
+    //spawn bombs randomly around the screen at coord bx, by
+    spawnBomb(){
+        this.bomb = this.physics.add.sprite(this.bombx, this.bomby, 'bomb', 0)
+        this.bomb.play('bomb')
+
+        this.bombx = Phaser.Math.Between(1,630)
+        this.bomby = Phaser.Math.Between(1,450)
+        console.log("here")
+    }
 }

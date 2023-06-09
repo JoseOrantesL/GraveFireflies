@@ -125,6 +125,7 @@ class EscapeDodge extends Phaser.Scene {
     update(){
         //Check whenever the player collides with the world bounds to start scene #2 
         if(this.seita.body.checkWorldBounds()){
+            this.alarm.stop();
             this.scene.start('dodgeScene');
         }
 

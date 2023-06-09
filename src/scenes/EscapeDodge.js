@@ -23,9 +23,14 @@ class EscapeDodge extends Phaser.Scene {
             frameWidth: 15,
             frameHeight: 8
         });
+        this.load.audio('alarm', 'alarm.mp3');
     }
 
     create(){
+
+        this.alarm = this.sound.add('alarm', {volume: 0.1, loop: true});
+        this.alarm.play();
+
         //Connecting the tilemap to the JSON file
         const map1 = this.add.tilemap('JSONmap1');
         const tileset1 = map1.addTilesetImage('tilemap2', 'tilemapImage1');

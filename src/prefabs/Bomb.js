@@ -8,6 +8,8 @@ class Bomb extends Phaser.Physics.Arcade.Sprite {
         this.parentScene.add.existing(this)
         this.parentScene.physics.add.existing(this)
         this.setImmovable(true)
+        this.spawnx = x
+        this.spawny = y
     }
 
     update(){
@@ -20,5 +22,8 @@ class Bomb extends Phaser.Physics.Arcade.Sprite {
     delete(){
         console.log("bomb destroyed")
         this.destroy()
+        let explosion = new Explosion(this.parentScene, this.spawnx, this.spawny)
+        explosion.play('explode')
+        this.parentScene.explosionGroup.add(explosion)
     }
 }

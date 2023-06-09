@@ -23,6 +23,10 @@ class EscapeDodge extends Phaser.Scene {
             frameWidth: 15,
             frameHeight: 8
         });
+        this.load.spritesheet('explosion', 'explosion.png',{
+            frameWidth: 20,
+            frameHeight: 20
+        });
         this.load.audio('alarm', 'alarm.mp3');
     }
 
@@ -85,6 +89,14 @@ class EscapeDodge extends Phaser.Scene {
                 end: 2
             })
         })
+        this.anims.create ({
+            key: 'explode',
+            frameRate: 8,
+            frames: this.anims.generateFrameNumbers('explosion', {
+                start: 0,
+                end: 5
+            })
+        })
 
         this.fire.play('fire1');
         
@@ -118,6 +130,9 @@ class EscapeDodge extends Phaser.Scene {
         
         //Create group to add bombs
         this.bombGroup = this.add.group({
+            runChildUpdate: true
+        })
+        this.explosionGroup = this.add.group({
             runChildUpdate: true
         })
     }

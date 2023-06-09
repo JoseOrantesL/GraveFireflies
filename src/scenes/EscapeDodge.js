@@ -110,14 +110,14 @@ class EscapeDodge extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.time.addEvent({delay:1000, callback: this.spawnBomb, callbackScope:this, loop:true})
-    
+        
+        //Create group to add bombs
+        this.bombGroup = this.add.group({
+            runChildUpdate: true
+        })
     }
 
     update(){
-        //this.time.addEvent({delay:2000, callback: this.spawnBomb(this.bombx, this.bomby), callbackScope:this, repeat:-1})
-
-        //setInterval(this.spawnBomb(this.bombx, this.bomby), 20000)
-
         //Check whenever the player collides with the world bounds to start scene #2 
         if(this.seita.body.checkWorldBounds()){
             this.scene.start('dodgeScene');
@@ -165,12 +165,9 @@ class EscapeDodge extends Phaser.Scene {
 
     //spawn bombs randomly around the screen
     spawnBomb(){
-        this.bomb = this.physics.add.sprite(this.bombx, this.bomby, 'bomb', 0)
-        this.bomb.play('bomb')
-
-        this.bomb.on('animationcomplete', ()=>{
-            this.bomb.destroy();
-        });
+        let bomb = new Bomb(this, this.bombx, this.bomby) 
+        this.bombGroup.add(bomb)
+        bomb.play('bomb')
 
         this.bombx = Phaser.Math.Between(1,630)
         this.bomby = Phaser.Math.Between(1,450)

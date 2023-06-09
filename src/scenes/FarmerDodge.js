@@ -39,18 +39,19 @@ class FarmerDodge extends Phaser.Scene {
 
 
         //add sprites
-        this.seita = this.physics.add.sprite(32,32, 'seita', 0);
+        this.seita = this.physics.add.sprite(50,450, 'seita', 0);
         this.setsuko = this.physics.add.sprite(100, 100, 'setsuko',0);
         this.farmer = this.physics.add.sprite(320, 210, 'farmer', 0);
         
 
         //Range
+        /*
         let graphics = this.add.graphics({fillStyle: {color: 0xff0000}});
 
         let triangle = Phaser.Geom.Triangle.BuildEquilateral(dimensions,dimensions, dimensions);
 
         graphics.fillTriangleShape(triangle);
-
+        */
 
         //create running animations
         this.anims.create ({
@@ -95,7 +96,6 @@ class FarmerDodge extends Phaser.Scene {
 
         //turn on collisions with background and other sprites
         this.seita.body.onCollide = true;
-        this.seita.body.setCollideWorldBounds(true);
         this.setsuko.body.setCollideWorldBounds(true)
 
         //set NPC sprites to immovable
@@ -110,20 +110,20 @@ class FarmerDodge extends Phaser.Scene {
         this.physics.add.collider(this.seita, trees);
         this.physics.add.collider(this.seita, crops);
         this.physics.add.collider(this.seita, this.setsuko)
-        this.physics.add.existing(graphics);
+        //this.physics.add.existing(graphics);
 
         //add tooltip for NPC interactions
-        this.texty = this.add.text(100, 70, 'Press e', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
+        this.texty = this.add.text(100, 70, 'Press space', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
         this.texty.visible = false
-        
-        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
-            {
-                console.log("inside log");
+        this.reply = this.add.text(100,70, 'I\'m hungry! Can you get me some food?', textConfig);
+        this.reply.visible = false;
+        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) => {
+                
                 this.texty.visible = true
-
-                this.time.delayedCall(1000, ()=>{
+                this.time.delayedCall(2000, ()=>{
                     this.texty.visible = false
                 })
+
             });
         
         //Make camera follow player
@@ -139,9 +139,15 @@ class FarmerDodge extends Phaser.Scene {
     }
 
     update(){
+
+        if(this.seita.body.checkWorldBounds()){
+
+            this.scene.start('escapeScene');
+
+        }
+
         //prevent NPC sprites from moving at all
         this.setsuko.setVelocity(0,0);
-        
 
         //Player movement
         this.direction = new Phaser.Math.Vector2(0);
@@ -177,7 +183,7 @@ class FarmerDodge extends Phaser.Scene {
 
         //Farmer animation updating
         if(this.farmer.anims.currentAnim.key === 'left'){
-            console.log("Entered 2");
+            
             this.time.delayedCall(1000, () => {
                 this.farmer.play('right');
             }, null, this);
@@ -185,14 +191,32 @@ class FarmerDodge extends Phaser.Scene {
         } 
         
         if(this.farmer.anims.currentAnim.key === 'right'){
-            console.log("Entered 2");
+            
             this.time.delayedCall(1000, () => {
                 this.farmer.play('left');
             }, null, this);
 
         }
 
+        if(this.distance(this.seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+            
+            this.texty.visible = false;
+            
+            this.reply.visible = true;
+
+            this.time.delayedCall(1000, () => {
+                
+                this.reply.visible = false;
+
+            }, null, this);
+        } 
+
     }
-    
+
+    distance(sprite1, sprite2){
+        
+        return Math.sqrt(Math.pow(sprite1.x - sprite2.x, 2) + Math.pow(sprite1.y - sprite2.y, 2));
+
+    }
     
 }

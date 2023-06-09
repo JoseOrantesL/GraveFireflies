@@ -17,3 +17,4 @@ let config = {
 
 const game = new Phaser.Game(config)
 let keyR;
+let dimensions = 200;

@@ -13,7 +13,13 @@ class FarmerDodge extends Phaser.Scene {
             frameWidth: 8,
             frameHeight: 16
         });
+
         this.load.image('setsuko', 'setsuko.png')
+        this.load.spritesheet('farmer', 'farmer.png', {
+            frameWidth: 32,
+            frameHeight: 32
+        });
+
         this.load.image('tilemapImage', 'tilemap2.png');
 
         this.load.tilemapTiledJSON('JSONmap', 'map02.json');
@@ -34,9 +40,18 @@ class FarmerDodge extends Phaser.Scene {
 
         //add sprites
         this.seita = this.physics.add.sprite(32,32, 'seita', 0);
-        this.setsuko = this.physics.add.sprite(100, 100, 'setsuko',0)
-
+        this.setsuko = this.physics.add.sprite(100, 100, 'setsuko',0);
+        this.farmer = this.physics.add.sprite(320, 210, 'farmer', 0);
         
+
+        //Range
+        let graphics = this.add.graphics({fillStyle: {color: 0xff0000}});
+
+        let triangle = Phaser.Geom.Triangle.BuildEquilateral(dimensions,dimensions, dimensions);
+
+        graphics.fillTriangleShape(triangle);
+
+
         //create running animations
         this.anims.create ({
             key: 'stand2',
@@ -57,6 +72,27 @@ class FarmerDodge extends Phaser.Scene {
             })
         })
         
+        //Farmer animation display
+        this.anims.create({
+            key: 'left',
+            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('farmer', {
+                start: 1,
+                end: 1
+            })
+        })
+
+        this.anims.create({
+            key: 'right',
+            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('farmer', {
+                start: 2,
+                end: 2
+            })
+        })
+
+        this.farmer.play('left');
+
         //turn on collisions with background and other sprites
         this.seita.body.onCollide = true;
         this.seita.body.setCollideWorldBounds(true);
@@ -74,7 +110,7 @@ class FarmerDodge extends Phaser.Scene {
         this.physics.add.collider(this.seita, trees);
         this.physics.add.collider(this.seita, crops);
         this.physics.add.collider(this.seita, this.setsuko)
-
+        this.physics.add.existing(graphics);
 
         //add tooltip for NPC interactions
         this.texty = this.add.text(100, 70, 'Press e', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
@@ -135,11 +171,27 @@ class FarmerDodge extends Phaser.Scene {
             this.seita.play("run2"); 
 
         }
-        
-
 
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
+
+        //Farmer animation updating
+        if(this.farmer.anims.currentAnim.key === 'left'){
+            console.log("Entered 2");
+            this.time.delayedCall(1000, () => {
+                this.farmer.play('right');
+            }, null, this);
+
+        } 
+        
+        if(this.farmer.anims.currentAnim.key === 'right'){
+            console.log("Entered 2");
+            this.time.delayedCall(1000, () => {
+                this.farmer.play('left');
+            }, null, this);
+
+        }
+
     }
     
     

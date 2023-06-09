@@ -88,6 +88,7 @@ class EscapeDodge extends Phaser.Scene {
         {
             this.scene.start('gameOverScene')
         });
+        
         //Setup camera to follow the player
         this.cameras.main.setBounds(0,0, map1.widthInPixels, map1.heightInPixels);
         this.cameras.main.startFollow(this.seita, true, 0.25,0.25)

@@ -40,11 +40,11 @@
             "scaleInDock": 1
         },
         "map02.json": {
-            "scale": 1.9158333333333333,
+            "scale": 1.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 393.0404523705959,
-                "y": 281.33971291866027
+                "x": 327.66666666666663,
+                "y": 248
             }
         },
         "map02.json#tilemap": {

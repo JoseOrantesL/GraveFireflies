@@ -8,6 +8,8 @@ class Explosion extends Phaser.Physics.Arcade.Sprite {
         this.parentScene.add.existing(this)
         this.parentScene.physics.add.existing(this)
         this.setImmovable(true)
+        this.sx = x
+        this.sy = y
     }
 
     update(){
@@ -18,7 +20,10 @@ class Explosion extends Phaser.Physics.Arcade.Sprite {
 
     //deletes current explosion sprite
     delete(){
-        console.log("explosion destroyed")
         this.destroy()
+        /*let fire = new Fire(this.parentScene, this.sx, this.sy)
+        fire.play('fire1')
+        this.parentScene.fireGroup.add(fire)
+        */
     }
 }

@@ -20,7 +20,6 @@ class Bomb extends Phaser.Physics.Arcade.Sprite {
 
     //deletes current bomb sprite
     delete(){
-        console.log("bomb destroyed")
         this.destroy()
         let explosion = new Explosion(this.parentScene, this.spawnx, this.spawny)
         explosion.play('explode')

@@ -48,9 +48,6 @@ class EscapeDodge extends Phaser.Scene {
         //Adding the player character to the scene
         this.seita = this.physics.add.sprite(50, 400, 'player', 0);
 
-        //Hazard setup
-        this.fire = this.physics.add.sprite(150, 100, 'fire', 0);
-        
         //Animation setup
         this.anims.create ({
             key: 'stand',
@@ -94,12 +91,9 @@ class EscapeDodge extends Phaser.Scene {
             frameRate: 8,
             frames: this.anims.generateFrameNumbers('explosion', {
                 start: 0,
-                end: 5
+                end: 4
             })
-        })
-
-        this.fire.play('fire1');
-        
+        })        
         //initialize bomb spawn coords
         this.bombx = 70
         this.bomby = 400
@@ -112,11 +106,11 @@ class EscapeDodge extends Phaser.Scene {
         this.physics.add.collider(this.seita, fence);
         this.physics.add.collider(this.seita, houses);
         this.physics.add.collider(this.seita, this.check);
-        this.physics.add.collider(this.seita, this.fire);
-        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
-        {
-            this.scene.start('gameOverScene')
-        });
+        //this.physics.add.collider(this.seita, this.fire);
+       // this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
+        //{
+        //    this.scene.start('gameOverScene')
+       // });
         
         //Setup camera to follow the player
         this.cameras.main.setBounds(0,0, map1.widthInPixels, map1.heightInPixels);
@@ -135,6 +129,7 @@ class EscapeDodge extends Phaser.Scene {
         this.explosionGroup = this.add.group({
             runChildUpdate: true
         })
+        this.fireGroup = this.add.group()
     }
 
     update(){
@@ -180,7 +175,7 @@ class EscapeDodge extends Phaser.Scene {
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
 
-
+        this.physics.world.collide(this.seita, this.explosionGroup, this.collided, null, this)
     }
   
 
@@ -193,5 +188,9 @@ class EscapeDodge extends Phaser.Scene {
         this.bombx = Phaser.Math.Between(1,630)
         this.bomby = Phaser.Math.Between(1,450)
         console.log("here")
+    }
+
+    collided(){
+        this.scene.start('gameOverScene')
     }
 }

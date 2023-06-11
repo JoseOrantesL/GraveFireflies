@@ -10,20 +10,19 @@ class Explosion extends Phaser.Physics.Arcade.Sprite {
         this.setImmovable(true)
         this.sx = x
         this.sy = y
+
+        //destroy the explosion when it finishes animation
+
+        this.on('animationcomplete', this.delete)
     }
 
     update(){
-        //destroy the explosion when it finishes animation
-        this.on('animationcomplete', this.delete)
     }
     
 
     //deletes current explosion sprite
     delete(){
         this.destroy()
-        /*let fire = new Fire(this.parentScene, this.sx, this.sy)
-        fire.play('fire1')
-        this.parentScene.fireGroup.add(fire)
-        */
+        this.parentScene.spawnFire(this.sx, this.sy)
     }
 }

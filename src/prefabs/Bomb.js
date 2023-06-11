@@ -10,11 +10,15 @@ class Bomb extends Phaser.Physics.Arcade.Sprite {
         this.setImmovable(true)
         this.spawnx = x
         this.spawny = y
+    
+        //destroy the bomb when it finishes animation
+
+        this.on('animationcomplete', this.delete)
+
     }
 
     update(){
         //destroy the bomb when it finishes animation
-        this.on('animationcomplete', this.delete)
     }
     
 

@@ -176,6 +176,8 @@ class EscapeDodge extends Phaser.Scene {
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
 
         this.physics.world.collide(this.seita, this.explosionGroup, this.collided, null, this)
+        this.physics.world.collide(this.seita, this.fireGroup, this.collided, null, this)
+
     }
   
 
@@ -187,10 +189,16 @@ class EscapeDodge extends Phaser.Scene {
 
         this.bombx = Phaser.Math.Between(1,630)
         this.bomby = Phaser.Math.Between(1,450)
-        console.log("here")
+    }
+
+    spawnFire(x, y){
+        let fire = new Fire(this, x, y)
+        this.fireGroup.add(fire)
+        fire.play('fire1')
     }
 
     collided(){
+        this.alarm.stop()
         this.scene.start('gameOverScene')
     }
 }

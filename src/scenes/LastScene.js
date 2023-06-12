@@ -7,21 +7,21 @@ class LastScene extends Phaser.Scene {
     
     preload(){
 
-        this.load.image('tilemapImage', 'tilemap2.png');
+        this.load.image('tilemapImage3', 'tilemap2.png');
 
-        this.load.tilemapTiledJSON('JSONmap', 'map02.json');
+        this.load.tilemapTiledJSON('JSONmap3', 'map03.json');
 
     }
 
     create(){
 
-        const map = this.add.tilemap('JSONmap');
-        const tileset = map.addTilesetImage('tilemap', 'tilemapImage');
+        const map3 = this.add.tilemap('JSONmap3');
+        const tileset = map3.addTilesetImage('tilemap', 'tilemapImage3');
 
-        const background = map.createLayer('Background', tileset, 0,0);
-        const vertWall = map.createLayer('VWalls', tileset, 0,0);
-        const HorWall = map.createLayer('HWalls', tileset, 0,0);
-        const trees = map.createLayer('Trees', tileset, 0,0).setDepth(10);
+        const background = map3.createLayer('Background', tileset, 0,0);
+        const vertWall = map3.createLayer('VWalls', tileset, 0,0);
+        const HorWall = map3.createLayer('HWalls', tileset, 0,0);
+        const trees = map3.createLayer('Trees', tileset, 0,0).setDepth(10);
 
         this.seita = this.physics.add.sprite(150,70, 'seita', 0);
 

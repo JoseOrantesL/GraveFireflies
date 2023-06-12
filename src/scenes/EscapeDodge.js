@@ -88,7 +88,7 @@ class EscapeDodge extends Phaser.Scene {
         })
         this.anims.create ({
             key: 'explode',
-            frameRate: 8,
+            frameRate: 10,
             frames: this.anims.generateFrameNumbers('explosion', {
                 start: 0,
                 end: 4

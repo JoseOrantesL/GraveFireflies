@@ -28,9 +28,10 @@ class FarmerDodge extends Phaser.Scene {
 
     create(){
         this.gotCarrot = false;
-        let gotLettuce = false;
-        let gotPome = false;
-        let gotPotato = false;
+        this.gotLettuce = false;
+        this.gotPome = false;
+        this.gotPotato = false;
+        this.triggered = false;
 
         //Create Tilemap layers
         const map = this.add.tilemap('JSONmap');
@@ -40,9 +41,9 @@ class FarmerDodge extends Phaser.Scene {
         const decorations = map.createLayer('Decorations', tileset, 0,0)
         const trees = map.createLayer('Trees', tileset, 0,0).setDepth(10);
         carrots = map.createLayer('Carrots', tileset, 0,0);
-        const lettuce = map.createLayer('Lettuce', tileset, 0,0);
-        const pome = map.createLayer('Pome', tileset, 0,0);
-        const potato = map.createLayer('Potato', tileset, 0,0);
+        this.lettuce = map.createLayer('Lettuce', tileset, 0,0);
+        this.pome = map.createLayer('Pome', tileset, 0,0);
+        this.potato = map.createLayer('Potato', tileset, 0,0);
 
         //add sprites
         //seita = this.physics.add.sprite(50,450, 'seita', 0);
@@ -115,21 +116,47 @@ class FarmerDodge extends Phaser.Scene {
         decorations.setCollisionByProperty({collides: true});
         trees.setCollisionByProperty({collides: true});
         carrots.setCollisionByProperty({collides: true});
-        lettuce.setCollisionByProperty({collides: true});
-        pome.setCollisionByProperty({collides: true});
-        potato.setCollisionByProperty({collides: true});
+        this.lettuce.setCollisionByProperty({collides: true});
+        this.pome.setCollisionByProperty({collides: true});
+        this.potato.setCollisionByProperty({collides: true});
+
+        //add tooltip for NPC interactions
+
+        this.texty = this.add.text(100, 70, 'I\'m hungry! Can you get me some food?', textConfig)
+        this.texty.visible = false
+
+        this.reply = this.add.text(100,70, 'Can you get me some more?', textConfig);
+        this.reply.visible = false;
+
+        this.finished = this.add.text(100,70, 'Done', textConfig);
+        this.finished.visible = false;
+
+        this.carrotText = this.add.text(0, 0, "Press Space to Pick Up Carrots", menuText);
+        this.carrotText.visible = false;
+
+        this.lettuceText = this.add.text(0, 0, "Press Space to Pick Up lettuce", menuText);
+        this.lettuceText.visible = false;
+
+        this.potatoText = this.add.text(0, 0, "Press Space to Pick Up Potatoes", menuText);
+        this.potatoText.visible = false;
+
+        this.pomeText = this.add.text(0, 0, "Press Space to Pick Up Pomes", menuText);
+        this.pomeText.visible = false;
 
         //Add detecting zones to physics
         this.physics.add.existing(this.zone1);
         this.physics.add.existing(this.zone2);
         this.physics.add.existing(this.zone3);
         this.physics.add.existing(this.zone4);
-        this.carrotText = this.add.text(0, 0, "Press Space to Pick Up Carrots", menuText);
-        this.carrotText.visible = false;
+
         //Collision checks
+
         this.physics.add.collider(seita, decorations);
         this.physics.add.collider(seita, trees);
-        this.physics.add.collider(seita, carrots, (seita, carrots) => {
+
+            //Carrot collision
+        this.physics.add.collider(seita, carrots, () => {
+
             if(this.gotCarrot == false){
                 this.carrotText.visible = true;
                 this.time.delayedCall(2000, () => {
@@ -141,33 +168,67 @@ class FarmerDodge extends Phaser.Scene {
             
         })
 
-        
-        this.physics.add.collider(seita, lettuce);
-        this.physics.add.collider(seita, pome);
-        this.physics.add.collider(seita, potato);
-        this.physics.add.collider(seita, this.setsuko)
-        this.physics.add.collider(seita, this.farmer)
-        this.physics.add.collider(seita, this.farmer2)
-       
-        //add tooltip for NPC interactions
+            //lettuce collision
+        this.physics.add.collider(seita, this.lettuce, () =>{
 
-        this.texty = this.add.text(100, 70, 'Press space', textConfig)
-        this.texty.visible = false
-        this.reply = this.add.text(100,70, 'I\'m hungry! Can you get me some food?', textConfig);
-        this.reply.visible = false;
-        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) => {
+            if(!this.gotLettuce){
+                this.lettuceText.visible = true;
+                this.time.delayedCall(1500, () => {
                 
-                this.texty.visible = true
+                    this.lettuceText.visible = false;
+
+                }, null, this);
+            }
+
+        });
+        this.physics.add.collider(seita, this.pome, () =>{
+            if(!this.gotPome){
+                this.pomeText.visible = true;
+                this.time.delayedCall(1500, () => {
+                
+                    this.pomeText.visible = false;
+
+                }, null, this);
+            }
+        });
+        this.physics.add.collider(seita, this.potato, ()=> {
+
+            if(!this.gotPotato){
+                this.potatoText.visible = true;
+                this.time.delayedCall(1500, () => {
+                
+                    this.potatoText.visible = false;
+
+                }, null, this);
+            }
+        });
+        
+        this.physics.add.collider(seita, this.setsuko, () =>{
+
+            if(!this.gotCarrot && !this.gotLettuce && !this.gotPome && !this.gotPotato){ //1st trigger
+                this.triggered = true;
+                this.texty.visible = true;
                 this.time.delayedCall(2000, ()=>{
-                    this.texty.visible = false
+                    this.texty.visible = false;
                 })
 
-            });
+            } else if(this.gotCarrot && this.gotLettuce && this.gotPome && this.gotPotato) { //All food delivered
+  
+                this.finished.visible = true;
+                this.time.delayedCall(2000, ()=>{
+                    this.reply.visible = false
+                })
+
+            }    
+ 
+        })
+        this.physics.add.collider(seita, this.farmer)
+        this.physics.add.collider(seita, this.farmer2)
 
         this.physics.world.on('overlap', (gameObject1, gameObject2, body1, body2) => {
             
-            //this.scene.start("gameOverScene");
-            console.log("Happening");
+            this.scene.start("gameOverScene");
+            
 
         });
     
@@ -186,7 +247,10 @@ class FarmerDodge extends Phaser.Scene {
     update(){
 
         this.carrotText.x = seita.body.position.x;
-        this.carrotText.y = seita.body.position.y - 30;
+        this.carrotText.y = seita.body.position.y + 30;
+
+        this.potatoText.x = seita.body.position.x - 120;
+        this.potatoText.y = seita.body.position.y + 30;
 
         if(seita.body.checkWorldBounds()){
 
@@ -256,7 +320,7 @@ class FarmerDodge extends Phaser.Scene {
 
         }
 
-        
+        //Lose condition
 
         if(this.distance(seita, this.farmer) < 31 || this.distance(seita, this.farmer2) < 31){
             
@@ -264,30 +328,52 @@ class FarmerDodge extends Phaser.Scene {
 
         }
 
-        if(this.distance(seita, carrots) < 102 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
-            if(!this.gotCarrot){
-                carrots.visible = false;
-                this.gotCarrot = true;
-                this.carrotText.setText("Carrots obtained!")
-                this.time.delayedCall(2000, () => {
-                
-                    this.carrotText.destroy();
-    
-                }, null, this);
-            } 
+        //carrot handling
+
+        if(this.triggered && this.distance(seita, carrots) > 53 && this.distance(seita, carrots) < 100  && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+
+            this.triggered = false;
+            this.cropsToggle(carrots, this.gotCarrot, this.carrotText, "Carrots");
+            this.gotCarrot = true;
+            
+        }
+        
+        //potato handling
+
+        if(this.triggered && this.distance(seita, this.potato) > 412 && this.distance(seita, this.potato) < 480 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+            this.triggered = false;
+            this.cropsToggle(this.potato, this.gotPotato, this.potatoText, "Potatoes");
+            
         }
 
-        if(this.distance(seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+        //lettuce handling
+        if(this.triggered && this.distance(seita, this.lettuce) > 170 && this.distance(seita, this.lettuce) < 222 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+            this.triggered = false;
+            this.cropsToggle(this.lettuce, this.gotLettuce, this.lettuceText, "Lettuce");
             
-            this.texty.visible = false;
-            
-            this.reply.visible = true;
+        }
+        
+        //pome handling
 
-            this.time.delayedCall(1000, () => {
-                
+        if(this.triggered && this.distance(seita, this.pome) > 294 && this.distance(seita, this.pome) < 351 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+            this.triggered = false;
+            this.cropsToggle(this.pome, this.gotPome, this.pomeText, "Pome");
+            
+        }
+
+        //delivery handling
+
+        if(!this.triggered && this.distance(seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space) ){
+            
+            this.triggered = true;
+            this.reply.setText("Thanks! Can you get me some more?");
+            this.reply.visible = true;
+            this.time.delayedCall(1500, () =>{
+
                 this.reply.visible = false;
 
-            }, null, this);
+            })
+
         } 
 
     }
@@ -306,4 +392,22 @@ class FarmerDodge extends Phaser.Scene {
 
     }
     
+    cropsToggle(crop, gotCrop, cropText, cropString){
+
+        cropText.visible = true;
+
+        if(!gotCrop){
+
+            crop.visible = false;
+            gotCrop = true;
+            cropText.setText(cropString + " obtained!")
+            this.time.delayedCall(2000, () => {
+                
+                cropText.destroy();
+
+            }, null, this);
+
+        }
+    }
+
 }

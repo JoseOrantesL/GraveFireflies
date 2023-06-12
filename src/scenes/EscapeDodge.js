@@ -31,7 +31,7 @@ class EscapeDodge extends Phaser.Scene {
     }
 
     create(){
-        //keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); This is my skip key
+        //keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); //This is my skip key
         this.alarm = this.sound.add('alarm', {volume: 0.1, loop: true});
         this.alarm.play();
 

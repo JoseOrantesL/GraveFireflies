@@ -122,25 +122,25 @@ class FarmerDodge extends Phaser.Scene {
 
         //add tooltip for NPC interactions
 
-        this.texty = this.add.text(100, 70, 'I\'m hungry! Can you get me some food?', textConfig)
+        this.texty = this.add.text(100, 70, 'I\'m hungry! Can you get me some food?', gameText)
         this.texty.visible = false
 
-        this.reply = this.add.text(100,70, 'Can you get me some more?', textConfig);
+        this.reply = this.add.text(100,70, 'Can you get me some more?', gameText);
         this.reply.visible = false;
 
         this.finished = this.add.text(100,70, 'Done', textConfig);
         this.finished.visible = false;
 
-        this.carrotText = this.add.text(0, 0, "Press Space to Pick Up Carrots", menuText);
+        this.carrotText = this.add.text(20, 0, "Press Space to Pick Up Carrots", gameText);
         this.carrotText.visible = false;
 
-        this.lettuceText = this.add.text(0, 0, "Press Space to Pick Up lettuce", menuText);
+        this.lettuceText = this.add.text(150, 0, "Press Space to Pick Up lettuce", gameText);
         this.lettuceText.visible = false;
 
-        this.potatoText = this.add.text(0, 0, "Press Space to Pick Up Potatoes", menuText);
+        this.potatoText = this.add.text(370, 0, "Press Space to Pick Up Potatoes", gameText);
         this.potatoText.visible = false;
 
-        this.pomeText = this.add.text(0, 0, "Press Space to Pick Up Pomes", menuText);
+        this.pomeText = this.add.text(250, 0, "Press Space to Pick Up Tomatoes", gameText);
         this.pomeText.visible = false;
 
         //Add detecting zones to physics
@@ -246,11 +246,11 @@ class FarmerDodge extends Phaser.Scene {
 
     update(){
 
-        this.carrotText.x = seita.body.position.x;
-        this.carrotText.y = seita.body.position.y + 30;
+        //this.carrotText.x = seita.body.position.x;
+        //this.carrotText.y = seita.body.position.y + 30;
 
-        this.potatoText.x = seita.body.position.x - 120;
-        this.potatoText.y = seita.body.position.y + 30;
+        //this.potatoText.x = seita.body.position.x - 120;
+        //this.potatoText.y = seita.body.position.y + 30;
 
         if(seita.body.checkWorldBounds()){
 
@@ -357,7 +357,7 @@ class FarmerDodge extends Phaser.Scene {
 
         if(this.triggered && this.distance(seita, this.pome) > 294 && this.distance(seita, this.pome) < 351 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
             this.triggered = false;
-            this.cropsToggle(this.pome, this.gotPome, this.pomeText, "Pome");
+            this.cropsToggle(this.pome, this.gotPome, this.pomeText, "Tomatoes");
             
         }
 

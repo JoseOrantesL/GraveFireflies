@@ -335,7 +335,7 @@ class FarmerDodge extends Phaser.Scene {
             this.triggered = false;
             this.cropsToggle(carrots, this.gotCarrot, this.carrotText, "Carrots");
             this.gotCarrot = true;
-            
+
         }
         
         //potato handling
@@ -386,7 +386,7 @@ class FarmerDodge extends Phaser.Scene {
 
     turnFarmer(sprite1, anim){
         
-        this.time.delayedCall(3000, () => {
+        this.time.delayedCall(4500, () => {
             sprite1.play(anim);
         }, null, this);
 

@@ -105,12 +105,12 @@ class FarmerDodge extends Phaser.Scene {
         this.farmer2.setImmovable(true);
 
         //zones farmer 1
-        this.zone1 = this.add.rectangle(60, 215, 110, 130, 0xff0000)
-        this.zone2 = this.add.rectangle(215, 215, 110, 130, 0xff0000)
+        this.zone1 = this.add.rectangle(60, 215, 110, 90, 0xff0000)
+        this.zone2 = this.add.rectangle(215, 215, 110, 90, 0xff0000)
 
         //zones farmer 2
-        this.zone3 = this.add.rectangle(350, 215, 150, 130, 0xff0000)
-        this.zone4 = this.add.rectangle(550, 215, 170, 130, 0xff0000)
+        this.zone3 = this.add.rectangle(350, 215, 150, 90, 0xff0000)
+        this.zone4 = this.add.rectangle(550, 215, 170, 90, 0xff0000)
 
         //Tilemap collision activation
         decorations.setCollisionByProperty({collides: true});
@@ -245,12 +245,6 @@ class FarmerDodge extends Phaser.Scene {
     }
 
     update(){
-
-        //this.carrotText.x = seita.body.position.x;
-        //this.carrotText.y = seita.body.position.y + 30;
-
-        //this.potatoText.x = seita.body.position.x - 120;
-        //this.potatoText.y = seita.body.position.y + 30;
 
         if(seita.body.checkWorldBounds()){
 

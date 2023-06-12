@@ -59,6 +59,18 @@ let credText = {
     fixedWidth: 0
 }
 
+let gameText = {
+    fontFamily: 'Calibri',
+    fontSize: '10px',
+    color: '#FFFFFF',
+    align: 'right',
+    padding:{
+        top:5,
+        bottom: 5
+    },
+    fixedWidth: 0
+}
+
 const game = new Phaser.Game(config)
 let keyR, keyS, keyC, keyB, keyE, keyI;
 

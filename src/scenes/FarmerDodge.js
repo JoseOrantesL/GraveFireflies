@@ -248,7 +248,7 @@ class FarmerDodge extends Phaser.Scene {
 
         if(seita.body.checkWorldBounds()){
 
-            this.scene.start('escapeScene');
+            this.scene.start('lastScene');
 
         }
         

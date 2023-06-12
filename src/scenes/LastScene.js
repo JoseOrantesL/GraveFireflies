@@ -1,4 +1,4 @@
-class EscapeDodge extends Phaser.Scene {
+class LastScene extends Phaser.Scene {
     constructor(){
         super("lastScene");
 

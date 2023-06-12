@@ -21,15 +21,51 @@ let config = {
         }
     },
     zoom: 2,
-    scene: [EscapeDodge, FarmerDodge, GameOver]
+    scene: [Menu, EscapeDodge, FarmerDodge, GameOver, Credits]
+}
+
+let menuText = {
+    fontFamily: 'Georgia',
+    fontSize: '20px',
+    color: '#FFFFFF',
+    align: 'right',
+    padding:{
+        top:5,
+        bottom: 5
+    },
+    fixedWidth: 0
+}
+
+let subText = {
+    fontFamily: 'Georgia',
+    fontSize: '14px',
+    color: '#FFFFFF',
+    align: 'right',
+    padding:{
+        top:5,
+        bottom: 5
+    },
+    fixedWidth: 0
+}
+let credText = {
+    fontFamily: 'Georgia',
+    fontSize: '10px',
+    color: '#FFFFFF',
+    align: 'right',
+    padding:{
+        top:5,
+        bottom: 5
+    },
+    fixedWidth: 0
 }
 
 const game = new Phaser.Game(config)
-let keyR;
+let keyR, keyS, keyC, keyB;
 let dimensions = 200;
+let gameWidth = game.width
+let gameHeight = game.height
 let textConfig = {
     fontFamily: 'Poppins',
     fontSize: '15px',
     align: 'right',
-    
 }

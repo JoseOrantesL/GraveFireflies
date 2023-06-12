@@ -14,7 +14,7 @@ class GameOver extends Phaser.Scene {
 
     update(){
         if(Phaser.Input.Keyboard.JustDown(keyR)){
-            this.scene.start("escapeScene")
+            this.scene.start("menuScene")
         }
     }
 }

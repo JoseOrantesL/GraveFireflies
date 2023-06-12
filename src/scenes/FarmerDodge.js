@@ -27,6 +27,10 @@ class FarmerDodge extends Phaser.Scene {
     }
 
     create(){
+        this.gotCarrot = false;
+        let gotLettuce = false;
+        let gotPome = false;
+        let gotPotato = false;
 
         //Create Tilemap layers
         const map = this.add.tilemap('JSONmap');
@@ -35,16 +39,19 @@ class FarmerDodge extends Phaser.Scene {
         const background = map.createLayer('Background', tileset, 0,0);
         const decorations = map.createLayer('Decorations', tileset, 0,0)
         const trees = map.createLayer('Trees', tileset, 0,0).setDepth(10);
-        const crops = map.createLayer('Crops', tileset, 0,0);
+        carrots = map.createLayer('Carrots', tileset, 0,0);
+        const lettuce = map.createLayer('Lettuce', tileset, 0,0);
+        const pome = map.createLayer('Pome', tileset, 0,0);
+        const potato = map.createLayer('Potato', tileset, 0,0);
 
         //add sprites
-        //this.seita = this.physics.add.sprite(50,450, 'seita', 0);
-        this.seita = this.physics.add.sprite(500,300, 'seita', 0);
+        //seita = this.physics.add.sprite(50,450, 'seita', 0);
+        seita = this.physics.add.sprite(150,70, 'seita', 0);
         this.setsuko = this.physics.add.sprite(100, 100, 'setsuko',0);
         this.farmer = this.physics.add.sprite(138, 210, 'farmer', 0);
         this.farmer2 = this.physics.add.sprite(445, 210, 'farmer', 0);
 
-        this.seita.body.onOverlap = true;
+        seita.body.onOverlap = true;
 
         //create running animations
         this.anims.create ({
@@ -88,7 +95,7 @@ class FarmerDodge extends Phaser.Scene {
         this.farmer.play('left');
         this.farmer2.play('right');
         //turn on collisions with background and other sprites
-        this.seita.body.onCollide = true;
+        seita.body.onCollide = true;
         this.setsuko.body.setCollideWorldBounds(true)
 
         //set NPC sprites to immovable
@@ -101,31 +108,50 @@ class FarmerDodge extends Phaser.Scene {
         this.zone2 = this.add.rectangle(215, 215, 110, 130, 0xff0000)
 
         //zones farmer 2
-        this.zone3 = this.add.rectangle(350, 215, 110, 130, 0xff0000)
-        this.zone4 = this.add.rectangle(550, 215, 110, 130, 0xff0000)
+        this.zone3 = this.add.rectangle(350, 215, 150, 130, 0xff0000)
+        this.zone4 = this.add.rectangle(550, 215, 170, 130, 0xff0000)
 
-        //Collision checks
+        //Tilemap collision activation
         decorations.setCollisionByProperty({collides: true});
         trees.setCollisionByProperty({collides: true});
-        crops.setCollisionByProperty({collides: true});
+        carrots.setCollisionByProperty({collides: true});
+        lettuce.setCollisionByProperty({collides: true});
+        pome.setCollisionByProperty({collides: true});
+        potato.setCollisionByProperty({collides: true});
+
+        //Add detecting zones to physics
         this.physics.add.existing(this.zone1);
         this.physics.add.existing(this.zone2);
         this.physics.add.existing(this.zone3);
         this.physics.add.existing(this.zone4);
+        this.carrotText = this.add.text(0, 0, "Press Space to Pick Up Carrots", menuText);
+        this.carrotText.visible = false;
+        //Collision checks
+        this.physics.add.collider(seita, decorations);
+        this.physics.add.collider(seita, trees);
+        this.physics.add.collider(seita, carrots, (seita, carrots) => {
+            if(this.gotCarrot == false){
+                this.carrotText.visible = true;
+                this.time.delayedCall(2000, () => {
+                
+                    this.carrotText.visible = false;
 
-        this.physics.add.collider(this.seita, decorations);
-        this.physics.add.collider(this.seita, trees);
-        this.physics.add.collider(this.seita, crops);
-        this.physics.add.collider(this.seita, this.setsuko)
-        this.physics.add.collider(this.seita, this.farmer)
-        this.physics.add.collider(this.seita, this.farmer2)
+                }, null, this); 
+            }         
+            
+        })
+
         
-        /*this.physics.add.overlap(this.seita, this.zone1);
-        this.physics.add.overlap(this.seita, this.zone2);
-        */
+        this.physics.add.collider(seita, lettuce);
+        this.physics.add.collider(seita, pome);
+        this.physics.add.collider(seita, potato);
+        this.physics.add.collider(seita, this.setsuko)
+        this.physics.add.collider(seita, this.farmer)
+        this.physics.add.collider(seita, this.farmer2)
        
         //add tooltip for NPC interactions
-        this.texty = this.add.text(100, 70, 'Press space', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
+
+        this.texty = this.add.text(100, 70, 'Press space', textConfig)
         this.texty.visible = false
         this.reply = this.add.text(100,70, 'I\'m hungry! Can you get me some food?', textConfig);
         this.reply.visible = false;
@@ -141,12 +167,13 @@ class FarmerDodge extends Phaser.Scene {
         this.physics.world.on('overlap', (gameObject1, gameObject2, body1, body2) => {
             
             //this.scene.start("gameOverScene");
+            console.log("Happening");
 
         });
     
         //Make camera follow player
         this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.seita, true, 0.25,0.25)
+        this.cameras.main.startFollow(seita, true, 0.25,0.25)
 
         this.physics.world.bounds.setTo(0,0, map.widthInPixels, map.heightInPixels);
 
@@ -158,12 +185,15 @@ class FarmerDodge extends Phaser.Scene {
 
     update(){
 
-        if(this.seita.body.checkWorldBounds()){
+        this.carrotText.x = seita.body.position.x;
+        this.carrotText.y = seita.body.position.y - 30;
+
+        if(seita.body.checkWorldBounds()){
 
             this.scene.start('escapeScene');
 
         }
-
+        
         //prevent NPC sprites from moving at all
         this.setsuko.setVelocity(0,0);
 
@@ -171,70 +201,83 @@ class FarmerDodge extends Phaser.Scene {
         this.direction = new Phaser.Math.Vector2(0);
 
         if(this.cursors.left.isDown){
-            this.seita.setFlip(true, false);
+            seita.setFlip(true, false);
             this.direction.x = -1
-            //this.seita.flipX = true;
-            this.seita.play("run2"); 
+            //seita.flipX = true;
+            seita.play("run2"); 
         }
         if(this.cursors.right.isDown){
-            this.seita.resetFlip();
+            seita.resetFlip();
             this.direction.x = 1;
-            this.seita.play("run2"); 
+            seita.play("run2"); 
 
         }
 
         if(this.cursors.up.isDown){
 
             this.direction.y = -1
-            this.seita.play("run2");  
+            seita.play("run2");  
 
         } 
         if(this.cursors.down.isDown){
 
             this.direction.y = 1;
-            this.seita.play("run2"); 
+            seita.play("run2"); 
 
         }
 
         this.direction.normalize();
-        this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
+        seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
 
         //Farmer animation updating
         if(this.farmer.anims.currentAnim.key === 'left'){     
             
-            this.physics.overlap(this.seita, this.zone1);
+            this.physics.overlap(seita, this.zone1);
             this.turnFarmer(this.farmer, "right");
             
         } 
         
         if(this.farmer.anims.currentAnim.key === 'right'){
 
-            this.physics.overlap(this.seita, this.zone2)
+            this.physics.overlap(seita, this.zone2)
             this.turnFarmer(this.farmer, "left");
 
         }
 
         if(this.farmer2.anims.currentAnim.key === 'left'){
-            this.physics.overlap(this.seita, this.zone3)
+            this.physics.overlap(seita, this.zone3)
             this.turnFarmer(this.farmer2, "right");
         }
 
         if(this.farmer2.anims.currentAnim.key === 'right'){
 
-            this.physics.overlap(this.seita, this.zone4)
+            this.physics.overlap(seita, this.zone4)
             this.turnFarmer(this.farmer2, "left");
 
         }
 
         
 
-        if(this.distance(this.seita, this.farmer) < 31 || this.distance(this.seita, this.farmer2) < 31){
+        if(this.distance(seita, this.farmer) < 31 || this.distance(seita, this.farmer2) < 31){
             
             this.scene.start("gameOverScene");
 
         }
 
-        if(this.distance(this.seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+        if(this.distance(seita, carrots) < 102 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+            if(!this.gotCarrot){
+                carrots.visible = false;
+                this.gotCarrot = true;
+                this.carrotText.setText("Carrots obtained!")
+                this.time.delayedCall(2000, () => {
+                
+                    this.carrotText.destroy();
+    
+                }, null, this);
+            } 
+        }
+
+        if(this.distance(seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
             
             this.texty.visible = false;
             

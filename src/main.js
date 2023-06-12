@@ -21,7 +21,7 @@ let config = {
         }
     },
     zoom: 2,
-    scene: [Menu, EscapeDodge, FarmerDodge, GameOver, Credits, Instructions]
+    scene: [Menu, EscapeDodge, FarmerDodge, LastScene, GameOver, Credits, Instructions]
 }
 
 let menuText = {

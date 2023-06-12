@@ -181,6 +181,7 @@ class FarmerDodge extends Phaser.Scene {
             }
 
         });
+        
         this.physics.add.collider(seita, this.pome, () =>{
             if(!this.gotPome){
                 this.pomeText.visible = true;
@@ -191,6 +192,7 @@ class FarmerDodge extends Phaser.Scene {
                 }, null, this);
             }
         });
+
         this.physics.add.collider(seita, this.potato, ()=> {
 
             if(!this.gotPotato){

@@ -141,7 +141,7 @@ class EscapeDodge extends Phaser.Scene {
 
         
         if(Phaser.Input.Keyboard.JustDown(keyE)){
-            this.scene.start("dodgeScene");
+            this.scene.start("lastScene");
         }
         
 

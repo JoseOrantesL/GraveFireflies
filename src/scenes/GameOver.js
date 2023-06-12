@@ -4,9 +4,14 @@ class GameOver extends Phaser.Scene {
 
         this.VEL = 100;
     }
+
+    preload(){
+        this.load.image('screen', './assets/lose.png')
+    }
     create(){
-        this.add.text(100,100,'Game Over',{ fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
-        this.add.text(100, 150, 'Press R to Restart', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
+        this.bg = this.add.image(gameWidth/2, gameHeight/2, 'screen').setOrigin(0)
+        this.add.text(100,50,'Game Over',menuText)
+        this.add.text(100, 150, 'Press R to Restart', subText)
 
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
 

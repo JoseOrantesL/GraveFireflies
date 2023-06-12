@@ -11,6 +11,7 @@ class Menu extends Phaser.Scene {
         //initialize keyboard inputs
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+        keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
 
 
         //set up background and text for menu
@@ -18,6 +19,7 @@ class Menu extends Phaser.Scene {
         this.titleText = this.add.text(90, 50, 'Grave of the Fireflies', menuText)
         this.titleStart = this.add.text(110, 90, 'Press S to start', subText)
         this.titleCred = this.add.text(110, 120, 'Press C to view Credits', subText)
+        this.instructCred = this.add.text(110, 140, 'Press I to view Instructions', subText)
     }
 
     update(){
@@ -26,6 +28,9 @@ class Menu extends Phaser.Scene {
         }
         if(Phaser.Input.Keyboard.JustDown(keyC)){
             this.scene.start("creditScene");
+        }
+        if(Phaser.Input.Keyboard.JustDown(keyI)){
+            this.scene.start("instructionScene");
         }
     }
 }

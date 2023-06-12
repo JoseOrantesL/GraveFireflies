@@ -44,7 +44,7 @@
         },
         "map02.json": {
             "scale": 2,
-            "selectedLayer": 3,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 395.75,
                 "y": 273.5

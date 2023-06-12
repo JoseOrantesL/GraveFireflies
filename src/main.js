@@ -61,8 +61,9 @@ let credText = {
 
 const game = new Phaser.Game(config)
 let keyR, keyS, keyC, keyB, keyE;
+
 let dimensions = 200;
-let seita, carrots;
+let seita, carrots, pome, potato, setsuko;
 let gameWidth = game.width
 let gameHeight = game.height
 let textConfig = {

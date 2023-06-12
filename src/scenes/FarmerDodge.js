@@ -37,21 +37,14 @@ class FarmerDodge extends Phaser.Scene {
         const trees = map.createLayer('Trees', tileset, 0,0).setDepth(10);
         const crops = map.createLayer('Crops', tileset, 0,0);
 
-
         //add sprites
-        this.seita = this.physics.add.sprite(50,450, 'seita', 0);
+        //this.seita = this.physics.add.sprite(50,450, 'seita', 0);
+        this.seita = this.physics.add.sprite(500,300, 'seita', 0);
         this.setsuko = this.physics.add.sprite(100, 100, 'setsuko',0);
-        this.farmer = this.physics.add.sprite(320, 210, 'farmer', 0);
-        
+        this.farmer = this.physics.add.sprite(138, 210, 'farmer', 0);
+        this.farmer2 = this.physics.add.sprite(445, 210, 'farmer', 0);
 
-        //Range
-        /*
-        let graphics = this.add.graphics({fillStyle: {color: 0xff0000}});
-
-        let triangle = Phaser.Geom.Triangle.BuildEquilateral(dimensions,dimensions, dimensions);
-
-        graphics.fillTriangleShape(triangle);
-        */
+        this.seita.body.onOverlap = true;
 
         //create running animations
         this.anims.create ({
@@ -93,25 +86,44 @@ class FarmerDodge extends Phaser.Scene {
         })
 
         this.farmer.play('left');
-
+        this.farmer2.play('right');
         //turn on collisions with background and other sprites
         this.seita.body.onCollide = true;
         this.setsuko.body.setCollideWorldBounds(true)
 
         //set NPC sprites to immovable
         this.setsuko.setImmovable(true)
+        this.farmer.setImmovable(true);
+        this.farmer2.setImmovable(true);
 
+        //zones farmer 1
+        this.zone1 = this.add.rectangle(60, 215, 110, 130, 0xff0000)
+        this.zone2 = this.add.rectangle(215, 215, 110, 130, 0xff0000)
+
+        //zones farmer 2
+        this.zone3 = this.add.rectangle(350, 215, 110, 130, 0xff0000)
+        this.zone4 = this.add.rectangle(550, 215, 110, 130, 0xff0000)
 
         //Collision checks
         decorations.setCollisionByProperty({collides: true});
         trees.setCollisionByProperty({collides: true});
         crops.setCollisionByProperty({collides: true});
+        this.physics.add.existing(this.zone1);
+        this.physics.add.existing(this.zone2);
+        this.physics.add.existing(this.zone3);
+        this.physics.add.existing(this.zone4);
+
         this.physics.add.collider(this.seita, decorations);
         this.physics.add.collider(this.seita, trees);
         this.physics.add.collider(this.seita, crops);
         this.physics.add.collider(this.seita, this.setsuko)
-        //this.physics.add.existing(graphics);
-
+        this.physics.add.collider(this.seita, this.farmer)
+        this.physics.add.collider(this.seita, this.farmer2)
+        
+        /*this.physics.add.overlap(this.seita, this.zone1);
+        this.physics.add.overlap(this.seita, this.zone2);
+        */
+       
         //add tooltip for NPC interactions
         this.texty = this.add.text(100, 70, 'Press space', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })
         this.texty.visible = false
@@ -125,7 +137,13 @@ class FarmerDodge extends Phaser.Scene {
                 })
 
             });
-        
+
+        this.physics.world.on('overlap', (gameObject1, gameObject2, body1, body2) => {
+            
+            //this.scene.start("gameOverScene");
+
+        });
+    
         //Make camera follow player
         this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.seita, true, 0.25,0.25)
@@ -182,19 +200,37 @@ class FarmerDodge extends Phaser.Scene {
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
 
         //Farmer animation updating
-        if(this.farmer.anims.currentAnim.key === 'left'){
+        if(this.farmer.anims.currentAnim.key === 'left'){     
             
-            this.time.delayedCall(1000, () => {
-                this.farmer.play('right');
-            }, null, this);
-
+            this.physics.overlap(this.seita, this.zone1);
+            this.turnFarmer(this.farmer, "right");
+            
         } 
         
         if(this.farmer.anims.currentAnim.key === 'right'){
+
+            this.physics.overlap(this.seita, this.zone2)
+            this.turnFarmer(this.farmer, "left");
+
+        }
+
+        if(this.farmer2.anims.currentAnim.key === 'left'){
+            this.physics.overlap(this.seita, this.zone3)
+            this.turnFarmer(this.farmer2, "right");
+        }
+
+        if(this.farmer2.anims.currentAnim.key === 'right'){
+
+            this.physics.overlap(this.seita, this.zone4)
+            this.turnFarmer(this.farmer2, "left");
+
+        }
+
+        
+
+        if(this.distance(this.seita, this.farmer) < 31 || this.distance(this.seita, this.farmer2) < 31){
             
-            this.time.delayedCall(1000, () => {
-                this.farmer.play('left');
-            }, null, this);
+            this.scene.start("gameOverScene");
 
         }
 
@@ -216,6 +252,14 @@ class FarmerDodge extends Phaser.Scene {
     distance(sprite1, sprite2){
         
         return Math.sqrt(Math.pow(sprite1.x - sprite2.x, 2) + Math.pow(sprite1.y - sprite2.y, 2));
+
+    }
+
+    turnFarmer(sprite1, anim){
+        
+        this.time.delayedCall(3000, () => {
+            sprite1.play(anim);
+        }, null, this);
 
     }
     

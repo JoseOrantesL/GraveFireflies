@@ -8,7 +8,10 @@ class LastScene extends Phaser.Scene {
     preload(){
         this.load.path = "./assets/";
         this.load.image('tilemapImage3', 'tilemap2.png');
-
+        this.load.spritesheet('seita', 'seita.png', {
+            frameWidth: 8,
+            frameHeight: 16
+        });
         this.load.tilemapTiledJSON('JSONmap3', 'map03.json');
 
     }
@@ -25,11 +28,39 @@ class LastScene extends Phaser.Scene {
 
         this.seita = this.physics.add.sprite(150,70, 'seita', 0);
 
+        this.anims.create ({
+            key: 'stand3',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('seita', {
+                start: 0,
+                end: 0
+            })
+        })
 
+        this.anims.create ({
+            key: 'run3',
+            frameRate: 8,
+            frames: this.anims.generateFrameNumbers('seita', {
+                start: 1,
+                end: 0
+            })
+        })
         
         trees.setCollisionByProperty({collides: true});
         vertWall.setCollisionByProperty({collides: true});
         HorWall.setCollisionByProperty({collides: true});
+
+        this.physics.add.collider(this.seita, vertWall);
+        this.physics.add.collider(this.seita, HorWall);
+        this.physics.add.collider(this.seita, trees);
+
+
+        //Make camera follow player
+        this.cameras.main.setBounds(0,0, map3.widthInPixels, map3.heightInPixels);
+        this.cameras.main.startFollow(this.seita, true, 0.25,0.25)
+
+        this.physics.world.bounds.setTo(0,0, map3.widthInPixels, map3.heightInPixels);
 
         this.cursors = this.input.keyboard.createCursorKeys();
     }
@@ -39,32 +70,32 @@ class LastScene extends Phaser.Scene {
         this.direction = new Phaser.Math.Vector2(0);
 
         if(this.cursors.left.isDown){
-            seita.setFlip(true, false);
+            this.seita.setFlip(true, false);
             this.direction.x = -1
-            //seita.flipX = true;
-            seita.play("run2"); 
+            this.seita.flipX = true;
+            this.seita.play("run3"); 
         }
         if(this.cursors.right.isDown){
-            seita.resetFlip();
+            this.seita.resetFlip();
             this.direction.x = 1;
-            seita.play("run2"); 
+            this.seita.play("run3"); 
 
         }
 
         if(this.cursors.up.isDown){
 
             this.direction.y = -1
-            seita.play("run2");  
+            this.seita.play("run3");  
 
         } 
         if(this.cursors.down.isDown){
 
             this.direction.y = 1;
-            seita.play("run2"); 
+            this.seita.play("run3"); 
 
         }
 
         this.direction.normalize();
-        //sseita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+        this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
     }
 }

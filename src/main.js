@@ -21,7 +21,7 @@ let config = {
         }
     },
     zoom: 2,
-    scene: [Menu, EscapeDodge, FarmerDodge, GameOver, Credits]
+    scene: [Menu, EscapeDodge, FarmerDodge, GameOver, Credits, Instructions]
 }
 
 let menuText = {
@@ -60,7 +60,7 @@ let credText = {
 }
 
 const game = new Phaser.Game(config)
-let keyR, keyS, keyC, keyB, keyE;
+let keyR, keyS, keyC, keyB, keyE, keyI;
 let dimensions = 200;
 let seita, carrots;
 let gameWidth = game.width

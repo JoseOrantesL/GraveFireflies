@@ -80,7 +80,7 @@ class EscapeDodge extends Phaser.Scene {
 
         this.anims.create ({
             key: 'bomb',
-            frameRate: 0.7,
+            frameRate: 1,
             frames: this.anims.generateFrameNumbers('bomb', {
                 start: 0,
                 end: 2
@@ -120,7 +120,7 @@ class EscapeDodge extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.time.addEvent({delay:1000, callback: this.spawnBomb, callbackScope:this, loop:true})
+        this.time.addEvent({delay:500, callback: this.spawnBomb, callbackScope:this, loop:true})
         
         //Create group to add bombs
         this.bombGroup = this.add.group({

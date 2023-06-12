@@ -6,7 +6,7 @@ class LastScene extends Phaser.Scene {
     }
     
     preload(){
-
+        this.load.path = "./assets/";
         this.load.image('tilemapImage3', 'tilemap2.png');
 
         this.load.tilemapTiledJSON('JSONmap3', 'map03.json');
@@ -65,6 +65,6 @@ class LastScene extends Phaser.Scene {
         }
 
         this.direction.normalize();
-        seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+        //sseita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
     }
 }

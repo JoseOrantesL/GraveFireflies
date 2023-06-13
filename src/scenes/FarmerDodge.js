@@ -264,7 +264,7 @@ class FarmerDodge extends Phaser.Scene {
 
         this.physics.world.on('overlap', (gameObject1, gameObject2, body1, body2) => {
             
-            this.scene.start("gameOverScene");
+            this.scene.start("gameOverScene2");
             
 
         });

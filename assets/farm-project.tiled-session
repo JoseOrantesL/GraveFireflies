@@ -43,11 +43,11 @@
             "scaleInDock": 1
         },
         "map02.json": {
-            "scale": 2,
-            "selectedLayer": 1,
+            "scale": 1.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 395.75,
-                "y": 273.5
+                "x": 278.99999999999994,
+                "y": 244
             }
         },
         "map02.json#tilemap": {
@@ -101,6 +101,7 @@
     "project": "farm-project.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "map03.json",
         "map02.tmj",
         "map03.tmj",
         "map02.json"

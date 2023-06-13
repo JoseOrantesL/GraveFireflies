@@ -13,7 +13,7 @@ class Winner extends Phaser.Scene {
         //load background and text
         this.bg = this.add.image(gameWidth/2, gameHeight/2, 'win').setOrigin(0)
         this.add.text(50, 20, 'The End', menuText)
-
+        this.add.text(50, 70, 'Setsuko now rests in peace.',credText)
         this.add.text(90, 200, 'Press R to return to Main Menu', credText)
         
     }

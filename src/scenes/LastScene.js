@@ -16,6 +16,7 @@ class LastScene extends Phaser.Scene {
         this.load.image('firewood', 'firewood.png')
         this.load.image('doll', 'doll.png')
         this.load.image('fruitCan', 'fruitCan.png')
+        this.load.image('coffin', 'coffin.png')
     }
 
     create(){
@@ -37,6 +38,9 @@ class LastScene extends Phaser.Scene {
         this.doll.setImmovable(true)
         this.doll.body.setCollideWorldBounds(true)
 
+        this.wood = this.physics.add.sprite(400, 70, 'firewood', 0)
+        this.wood.setImmovable(true)
+        this.wood.body.setCollideWorldBounds(true)
 
 
         this.anims.create ({
@@ -66,12 +70,19 @@ class LastScene extends Phaser.Scene {
         this.physics.add.collider(this.seita, vertWall);
         this.physics.add.collider(this.seita, HorWall);
         this.physics.add.collider(this.seita, trees);
-        this.physics.add.collider(this.seita, this.doll);
+        this.physics.add.collider(this.seita, this.doll)
+        this.physics.add.collider(this.seita, this.wood)
 
-        this.dollText = this.add.text(30, 50, 'Press space to pick up doll', gameText)
+
+        this.dollText = this.add.text(40, 50, 'Press space to pick up doll', gameText)
         this.dollText.visible = false
         this.dollCollected = this.add.text(30,50, 'Doll Collected!', gameText)
         this.dollCollected.visible = false
+
+        this.woodText = this.add.text(350, 50, 'Press space to pick up firewood', gameText)
+        this.woodText.visible = false
+        this.woodCollected = this.add.text(350, 50, 'Firewood Collected!', gameText)
+        this.woodCollected.visible = false
 
         //Make camera follow player
         this.cameras.main.setBounds(0,0, map3.widthInPixels, map3.heightInPixels);
@@ -130,6 +141,25 @@ class LastScene extends Phaser.Scene {
                 this.time.delayedCall(1500, () =>{
 
                     this.dollCollected.visible = false;
+    
+                })
+            }
+        }
+        if(this.distance(this.seita, this.wood) < 20){
+            this.woodText.visible = true
+            this.time.delayedCall(1500, () =>{
+
+                this.woodText.visible = false;
+
+            })
+            if(Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+                this.itemsCollected += 1
+                this.woodText.destroy()
+                this.woodCollected.visible = true
+                this.wood.destroy()
+                this.time.delayedCall(1500, () =>{
+
+                    this.woodCollected.visible = false;
     
                 })
             }

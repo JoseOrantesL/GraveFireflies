@@ -46,7 +46,8 @@ class LastScene extends Phaser.Scene {
         this.tinCan.setImmovable(true)
         this.tinCan.body.setCollideWorldBounds(true)
 
-
+        this.coffin = this.physics.add.sprite(355, 290, 'coffin', 0);
+        this.coffin.setImmovable(true);
         this.anims.create ({
             key: 'stand3',
             frameRate: 8,
@@ -66,6 +67,28 @@ class LastScene extends Phaser.Scene {
             })
         })
         
+
+        this.coffinText = this.add.text(305, 260, "I\'m not done collecting yet", gameText);
+        this.coffinText.visible = false;
+
+        this.dollText = this.add.text(30, 50, 'Press space to pick up doll', gameText)
+        this.dollText.visible = false
+
+        this.dollCollected = this.add.text(30,50, 'Doll Collected!', gameText)
+        this.dollCollected.visible = false
+
+        this.woodText = this.add.text(450, 30, 'Press space to pick up firewood', gameText)
+        this.woodText.visible = false
+
+        this.woodCollected = this.add.text(450, 50, 'Firewood Collected!', gameText)
+        this.woodCollected.visible = false
+
+        this.tinText = this.add.text(500, 450, 'Press space to pick up candy box', gameText)
+        this.tinText.visible = false
+
+        this.tinCollected = this.add.text(500, 450, 'Candy box Collected!', gameText)
+        this.tinCollected.visible = false
+
         //collision checks
         trees.setCollisionByProperty({collides: true});
         vertWall.setCollisionByProperty({collides: true});
@@ -76,22 +99,25 @@ class LastScene extends Phaser.Scene {
         this.physics.add.collider(this.seita, trees);
         this.physics.add.collider(this.seita, this.doll)
         this.physics.add.collider(this.seita, this.wood)
+        this.physics.add.collider(this.seita, this.coffin, ()=>{
+
+            if(this.itemsCollected != 3){
+
+                this.coffinText.visible = true;
+                this.time.delayedCall(2000, () =>{
+                    this.coffinText.visible = false;
+                })
+            } else if(this.itemsCollected == 3){
+
+                this.coffinText.setText("Press Space");
+                this.coffinText.visible = true;
+                this.time.delayedCall(2000, () =>{
+                    this.coffinText.visible = false;
+                })
+            } 
+        })
 
 
-        this.dollText = this.add.text(30, 50, 'Press space to pick up doll', gameText)
-        this.dollText.visible = false
-        this.dollCollected = this.add.text(30,50, 'Doll Collected!', gameText)
-        this.dollCollected.visible = false
-
-        this.woodText = this.add.text(450, 30, 'Press space to pick up firewood', gameText)
-        this.woodText.visible = false
-        this.woodCollected = this.add.text(450, 50, 'Firewood Collected!', gameText)
-        this.woodCollected.visible = false
-
-        this.tinText = this.add.text(500, 450, 'Press space to pick up candy box', gameText)
-        this.tinText.visible = false
-        this.tinCollected = this.add.text(500, 450, 'Candy box Collected!', gameText)
-        this.tinCollected.visible = false
 
         //Make camera follow player
         this.cameras.main.setBounds(0,0, map3.widthInPixels, map3.heightInPixels);
@@ -192,6 +218,13 @@ class LastScene extends Phaser.Scene {
                 })
             }
         }
+
+        if(this.itemsCollected == 3 && this.distance(this.seita, this.coffin) > 13 && this.distance(this.seita, this.coffin) < 17 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+
+            this.scene.start("winScene");
+
+        }
+
     }
 
     distance(sprite1, sprite2){

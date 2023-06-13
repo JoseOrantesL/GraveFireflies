@@ -356,8 +356,8 @@ class FarmerDodge extends Phaser.Scene {
         //Lose condition
 
         if(this.distance(seita, this.farmer) < 31 || this.distance(seita, this.farmer2) < 31){
-            
-            this.scene.start("gameOverScene");
+            this.farm.stop();
+            this.scene.start("gameOverScene2");
 
         }
 

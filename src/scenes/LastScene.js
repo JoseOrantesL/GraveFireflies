@@ -17,6 +17,10 @@ class LastScene extends Phaser.Scene {
         this.load.image('doll', 'doll.png')
         this.load.image('fruitCan', 'fruitCan.png')
         this.load.image('coffin', 'coffin.png')
+        this.load.spritesheet('fire3', 'fire.png', {
+            frameHeight: 20,
+            frameWidth: 20
+        });
     }
 
     create(){
@@ -46,6 +50,11 @@ class LastScene extends Phaser.Scene {
         this.tinCan.setImmovable(true)
         this.tinCan.body.setCollideWorldBounds(true)
 
+        this.fire3 = this.physics.add.sprite(355, 290, 'fire3', 0);
+        this.fire3.setImmovable(true)
+        this.fire3.body.setCollideWorldBounds(true)
+        this.fire3.visible = false
+
         this.coffin = this.physics.add.sprite(355, 290, 'coffin', 0);
         this.coffin.setImmovable(true);
         this.anims.create ({
@@ -64,6 +73,15 @@ class LastScene extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('seita', {
                 start: 1,
                 end: 0
+            })
+        })
+        this.anims.create ({
+            key: 'fire4',
+            frameRate: 15,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('fire3', {
+                start: 0,
+                end: 1
             })
         })
         
@@ -99,6 +117,8 @@ class LastScene extends Phaser.Scene {
         this.physics.add.collider(this.seita, trees);
         this.physics.add.collider(this.seita, this.doll)
         this.physics.add.collider(this.seita, this.wood)
+        this.physics.add.collider(this.seita, this.fire3)
+
         this.physics.add.collider(this.seita, this.coffin, ()=>{
 
             if(this.itemsCollected != 3){
@@ -220,9 +240,11 @@ class LastScene extends Phaser.Scene {
         }
 
         if(this.itemsCollected == 3 && this.distance(this.seita, this.coffin) > 13 && this.distance(this.seita, this.coffin) < 17 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
-
-            this.scene.start("winScene");
-
+            this.fire3.visible = true
+            this.fire3.play('fire4')
+            this.time.delayedCall(3000, () =>{
+                this.scene.start("winScene");
+            })
         }
 
     }

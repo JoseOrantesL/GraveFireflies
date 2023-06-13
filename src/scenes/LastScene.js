@@ -38,9 +38,13 @@ class LastScene extends Phaser.Scene {
         this.doll.setImmovable(true)
         this.doll.body.setCollideWorldBounds(true)
 
-        this.wood = this.physics.add.sprite(400, 70, 'firewood', 0)
+        this.wood = this.physics.add.sprite(500, 70, 'firewood', 0)
         this.wood.setImmovable(true)
         this.wood.body.setCollideWorldBounds(true)
+
+        this.tinCan = this.physics.add.sprite(600, 450, 'fruitCan',0)
+        this.tinCan.setImmovable(true)
+        this.tinCan.body.setCollideWorldBounds(true)
 
 
         this.anims.create ({
@@ -74,15 +78,20 @@ class LastScene extends Phaser.Scene {
         this.physics.add.collider(this.seita, this.wood)
 
 
-        this.dollText = this.add.text(40, 50, 'Press space to pick up doll', gameText)
+        this.dollText = this.add.text(30, 50, 'Press space to pick up doll', gameText)
         this.dollText.visible = false
         this.dollCollected = this.add.text(30,50, 'Doll Collected!', gameText)
         this.dollCollected.visible = false
 
-        this.woodText = this.add.text(350, 50, 'Press space to pick up firewood', gameText)
+        this.woodText = this.add.text(450, 30, 'Press space to pick up firewood', gameText)
         this.woodText.visible = false
-        this.woodCollected = this.add.text(350, 50, 'Firewood Collected!', gameText)
+        this.woodCollected = this.add.text(450, 50, 'Firewood Collected!', gameText)
         this.woodCollected.visible = false
+
+        this.tinText = this.add.text(500, 450, 'Press space to pick up candy box', gameText)
+        this.tinText.visible = false
+        this.tinCollected = this.add.text(500, 450, 'Candy box Collected!', gameText)
+        this.tinCollected.visible = false
 
         //Make camera follow player
         this.cameras.main.setBounds(0,0, map3.widthInPixels, map3.heightInPixels);
@@ -160,6 +169,25 @@ class LastScene extends Phaser.Scene {
                 this.time.delayedCall(1500, () =>{
 
                     this.woodCollected.visible = false;
+    
+                })
+            }
+        }
+        if(this.distance(this.seita, this.tinCan) < 20){
+            this.tinText.visible = true
+            this.time.delayedCall(1500, () =>{
+
+                this.tinText.visible = false;
+
+            })
+            if(Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+                this.itemsCollected += 1
+                this.tinText.destroy()
+                this.tinCollected.visible = true
+                this.tinCan.destroy()
+                this.time.delayedCall(1500, () =>{
+
+                    this.tinCollected.visible = false;
     
                 })
             }

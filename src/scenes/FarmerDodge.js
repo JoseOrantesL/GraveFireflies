@@ -27,6 +27,7 @@ class FarmerDodge extends Phaser.Scene {
     }
 
     create(){
+        
         this.gotCarrot = false;
         this.gotLettuce = false;
         this.gotPome = false;
@@ -40,6 +41,7 @@ class FarmerDodge extends Phaser.Scene {
         const background = map.createLayer('Background', tileset, 0,0);
         const decorations = map.createLayer('Decorations', tileset, 0,0)
         const trees = map.createLayer('Trees', tileset, 0,0).setDepth(10);
+        this.walls = map.createLayer('wall', tileset, 0,0);
         carrots = map.createLayer('Carrots', tileset, 0,0);
         this.lettuce = map.createLayer('Lettuce', tileset, 0,0);
         this.pome = map.createLayer('Pome', tileset, 0,0);
@@ -47,8 +49,8 @@ class FarmerDodge extends Phaser.Scene {
 
         //add sprites
         //seita = this.physics.add.sprite(50,450, 'seita', 0);
-        seita = this.physics.add.sprite(150,70, 'seita', 0);
-        this.setsuko = this.physics.add.sprite(100, 100, 'setsuko',0);
+        seita = this.physics.add.sprite(540,450, 'seita', 0);
+        this.setsuko = this.physics.add.sprite(530, 440, 'setsuko',0);
         this.farmer = this.physics.add.sprite(138, 210, 'farmer', 0);
         this.farmer2 = this.physics.add.sprite(445, 210, 'farmer', 0);
 
@@ -106,15 +108,19 @@ class FarmerDodge extends Phaser.Scene {
 
         //zones farmer 1
         this.zone1 = this.add.rectangle(60, 215, 110, 90, 0xff0000)
+        this.zone1.visible = false;
         this.zone2 = this.add.rectangle(215, 215, 110, 90, 0xff0000)
-
+        this.zone2.visible = false;
         //zones farmer 2
         this.zone3 = this.add.rectangle(350, 215, 150, 90, 0xff0000)
+        this.zone3.visible = false;
         this.zone4 = this.add.rectangle(550, 215, 170, 90, 0xff0000)
+        this.zone4.visible = false;
 
         //Tilemap collision activation
         decorations.setCollisionByProperty({collides: true});
         trees.setCollisionByProperty({collides: true});
+        this.walls.setCollisionByProperty({collides: true});
         carrots.setCollisionByProperty({collides: true});
         this.lettuce.setCollisionByProperty({collides: true});
         this.pome.setCollisionByProperty({collides: true});
@@ -122,13 +128,13 @@ class FarmerDodge extends Phaser.Scene {
 
         //add tooltip for NPC interactions
 
-        this.texty = this.add.text(100, 70, 'I\'m hungry! Can you get me some food?', gameText)
+        this.texty = this.add.text(450, 410, 'I\'m hungry! Can you get me some food?', gameText)
         this.texty.visible = false
 
-        this.reply = this.add.text(100,70, 'Can you get me some more?', gameText);
+        this.reply = this.add.text(450,420, 'Can you get me some more?', gameText);
         this.reply.visible = false;
 
-        this.finished = this.add.text(100,70, 'Done', textConfig);
+        this.finished = this.add.text(450,420, 'this is done', gameText);
         this.finished.visible = false;
 
         this.carrotText = this.add.text(20, 0, "Press Space to Pick Up Carrots", gameText);
@@ -153,7 +159,7 @@ class FarmerDodge extends Phaser.Scene {
 
         this.physics.add.collider(seita, decorations);
         this.physics.add.collider(seita, trees);
-
+        this.physics.add.collider(seita, this.walls);
             //Carrot collision
         this.physics.add.collider(seita, carrots, () => {
 
@@ -214,15 +220,7 @@ class FarmerDodge extends Phaser.Scene {
                     this.texty.visible = false;
                 })
 
-            } else if(this.gotCarrot && this.gotLettuce && this.gotPome && this.gotPotato) { //All food delivered
-  
-                this.finished.visible = true;
-                this.time.delayedCall(2000, ()=>{
-                    this.reply.visible = false
-                })
-
-            }    
- 
+            }  
         })
         this.physics.add.collider(seita, this.farmer)
         this.physics.add.collider(seita, this.farmer2)
@@ -254,9 +252,6 @@ class FarmerDodge extends Phaser.Scene {
 
         }
         
-        //prevent NPC sprites from moving at all
-        this.setsuko.setVelocity(0,0);
-
         //Player movement
         this.direction = new Phaser.Math.Vector2(0);
 
@@ -339,14 +334,14 @@ class FarmerDodge extends Phaser.Scene {
         if(this.triggered && this.distance(seita, this.potato) > 412 && this.distance(seita, this.potato) < 480 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
             this.triggered = false;
             this.cropsToggle(this.potato, this.gotPotato, this.potatoText, "Potatoes");
-            
+            this.gotPotato = true;
         }
 
         //lettuce handling
         if(this.triggered && this.distance(seita, this.lettuce) > 170 && this.distance(seita, this.lettuce) < 222 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
             this.triggered = false;
             this.cropsToggle(this.lettuce, this.gotLettuce, this.lettuceText, "Lettuce");
-            
+            this.gotLettuce = true;
         }
         
         //pome handling
@@ -354,12 +349,22 @@ class FarmerDodge extends Phaser.Scene {
         if(this.triggered && this.distance(seita, this.pome) > 294 && this.distance(seita, this.pome) < 351 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
             this.triggered = false;
             this.cropsToggle(this.pome, this.gotPome, this.pomeText, "Tomatoes");
-            
+            this.gotPome = true;
         }
 
         //delivery handling
 
-        if(!this.triggered && this.distance(seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space) ){
+        if((this.gotCarrot && this.gotLettuce && this.gotPome && this.gotPotato) && this.distance(seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space)) { //All food delivered
+            console.log("entered here")
+            this.finished.visible = true;
+            this.time.delayedCall(2000, ()=>{
+                this.reply.visible = false
+            })
+            this.setsuko.destroy();
+            this.walls.visible = false;
+            this.walls.setCollisionByProperty({collides: true}, false);
+
+        }  else if(!this.triggered && this.distance(seita, this.setsuko) < 15 && Phaser.Input.Keyboard.JustDown(this.cursors.space) ){
             
             this.triggered = true;
             this.reply.setText("Thanks! Can you get me some more?");

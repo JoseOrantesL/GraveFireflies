@@ -47,6 +47,7 @@ class LastScene extends Phaser.Scene {
             })
         })
         
+        //collision checks
         trees.setCollisionByProperty({collides: true});
         vertWall.setCollisionByProperty({collides: true});
         HorWall.setCollisionByProperty({collides: true});

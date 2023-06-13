@@ -65,6 +65,18 @@
         "map02.tmj#tilemap": {
             "scaleInDock": 1
         },
+        "map03.json": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 207.25,
+                "y": 343
+            }
+        },
+        "map03.json#tilemap": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "map03.tmj": {
             "scale": 2,
             "selectedLayer": 3,

@@ -1,10 +1,8 @@
 /*
-We're missing a credit scene for our game for now.
-At the moment, credits are given below
+Collaborators:
 
-Credit for the art used: 
-Tilemap sprites: https://kale-game.itch.io/2d-pixel-art Author: Kale Game
-Alarm sfx, 1st scene: https://www.youtube.com/watch?v=GToHq7YAq_g Author: All Sound Effects Music & Films 
+Lucas Lee
+Jose Orantes
 
 */
 let config = {

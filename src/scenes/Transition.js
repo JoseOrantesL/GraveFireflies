@@ -13,7 +13,7 @@ class Transition extends Phaser.Scene {
         //load background and text
         this.bg = this.add.image(gameWidth/2, gameHeight/2, 'bg').setOrigin(0)
         this.add.text(20, 20, 'No matter how much food you managed to give Setsuko,', credText)
-        this.add.text(20, 40, 'she was unable to survive', credText)
+        this.add.text(20, 40, 'she was unable to survive and dies to malnutrition', credText)
         
         this.add.text(40, 100, 'Press R to continue', credText)
     }

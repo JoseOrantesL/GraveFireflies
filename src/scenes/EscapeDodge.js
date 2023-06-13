@@ -136,12 +136,6 @@ class EscapeDodge extends Phaser.Scene {
             this.scene.start('dodgeScene');
         }
 
-        
-        if(Phaser.Input.Keyboard.JustDown(keyE)){
-            this.scene.start("dodgeScene");
-        }
-        
-
         //Movement setup and adaptation
         this.direction = new Phaser.Math.Vector2(0);
 

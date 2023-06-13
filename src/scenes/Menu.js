@@ -12,8 +12,6 @@ class Menu extends Phaser.Scene {
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
         keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
-        keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         
         //set up background and text for menu
         this.bg = this.add.image(gameWidth/2, gameHeight/2, 'opening').setOrigin(0)
@@ -33,11 +31,6 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyI)){
             this.scene.start("instructionScene");
         }
-        if(Phaser.Input.Keyboard.JustDown(keyQ)){
-            this.scene.start("winScene");
-        }
-        if(Phaser.Input.Keyboard.JustDown(keyW)){
-            this.scene.start("transitionScene");
-        }
+
     }
 }

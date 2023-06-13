@@ -208,7 +208,7 @@ class FarmerDodge extends Phaser.Scene {
             }
 
         });
-        
+            //Tomato collision
         this.physics.add.collider(seita, this.pome, () =>{
                 if(!this.triggered && !this.gotPome){
 
@@ -228,7 +228,7 @@ class FarmerDodge extends Phaser.Scene {
                     }, null, this);
             }
         });
-
+            //Potato collision
         this.physics.add.collider(seita, this.potato, ()=> {
             if(!this.triggered && !this.gotPotato){
 
@@ -248,7 +248,7 @@ class FarmerDodge extends Phaser.Scene {
                 }, null, this);
             }
         });
-        
+            //Delivery collision
         this.physics.add.collider(seita, this.setsuko, () =>{
 
             if(!this.gotCarrot && !this.gotLettuce && !this.gotPome && !this.gotPotato){ //1st trigger
@@ -262,6 +262,8 @@ class FarmerDodge extends Phaser.Scene {
         })
         this.physics.add.collider(seita, this.farmer)
         this.physics.add.collider(seita, this.farmer2)
+
+        //Lose condition
 
         this.physics.world.on('overlap', (gameObject1, gameObject2, body1, body2) => {
             this.farm.stop();
@@ -283,10 +285,10 @@ class FarmerDodge extends Phaser.Scene {
     }
 
     update(){
-
+        //Special text coordinates
         this.check.x = seita.body.x -50;
         this.check.y = seita.body.y + 10;
-
+        //Go next scene
         if(seita.body.checkWorldBounds()){
 
             this.farm.stop();
@@ -386,7 +388,7 @@ class FarmerDodge extends Phaser.Scene {
             this.gotLettuce = true;
         }
         
-        //pome handling
+        //Tomato handling
 
         if(this.triggered && this.distance(seita, this.pome) > 294 && this.distance(seita, this.pome) < 351 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
             this.triggered = false;
@@ -427,6 +429,7 @@ class FarmerDodge extends Phaser.Scene {
 
     }
 
+    //Helper function farmer turn around
     turnFarmer(sprite1, anim){
         
         this.time.delayedCall(4500, () => {
@@ -434,7 +437,7 @@ class FarmerDodge extends Phaser.Scene {
         }, null, this);
 
     }
-    
+    //crops helper function tweaking
     cropsToggle(crop, gotCrop, cropText, cropString){
 
         cropText.visible = true;

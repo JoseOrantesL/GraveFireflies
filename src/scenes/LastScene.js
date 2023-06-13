@@ -21,10 +21,14 @@ class LastScene extends Phaser.Scene {
             frameHeight: 20,
             frameWidth: 20
         });
+        this.load.audio('pick', 'pickup.mp3');
+        this.load.audio("sad", "sad.mp3");
     }
 
     create(){
-
+        this.sfx = this.sound.add('pick', {volume: 0.05});
+        this.music = this.sound.add('sad', {volume: 0.1, loop: true});
+        this.music.play();
         const map3 = this.add.tilemap('JSONmap3');
         const tileset = map3.addTilesetImage('tilemap', 'tilemapImage3');
 
@@ -188,6 +192,7 @@ class LastScene extends Phaser.Scene {
             if(Phaser.Input.Keyboard.JustDown(this.cursors.space)){
                 this.itemsCollected += 1
                 this.dollText.destroy()
+                this.sfx.play();
                 this.dollCollected.visible = true
                 this.doll.destroy()
                 this.time.delayedCall(1500, () =>{
@@ -207,6 +212,7 @@ class LastScene extends Phaser.Scene {
             if(Phaser.Input.Keyboard.JustDown(this.cursors.space)){
                 this.itemsCollected += 1
                 this.woodText.destroy()
+                this.sfx.play();
                 this.woodCollected.visible = true
                 this.wood.destroy()
                 this.time.delayedCall(1500, () =>{
@@ -226,6 +232,7 @@ class LastScene extends Phaser.Scene {
             if(Phaser.Input.Keyboard.JustDown(this.cursors.space)){
                 this.itemsCollected += 1
                 this.tinText.destroy()
+                this.sfx.play();
                 this.tinCollected.visible = true
                 this.tinCan.destroy()
                 this.time.delayedCall(1500, () =>{
@@ -239,6 +246,7 @@ class LastScene extends Phaser.Scene {
         if(this.itemsCollected == 3 && this.distance(this.seita, this.coffin) > 13 && this.distance(this.seita, this.coffin) < 17 && Phaser.Input.Keyboard.JustDown(this.cursors.space)){
             this.fire3.visible = true
             this.fire3.play('fire4')
+            this.music.stop();
             this.time.delayedCall(3000, () =>{
                 this.scene.start("winScene");
             })

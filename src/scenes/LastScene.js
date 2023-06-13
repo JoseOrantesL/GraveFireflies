@@ -13,7 +13,9 @@ class LastScene extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.tilemapTiledJSON('JSONmap3', 'map03.json');
-
+        this.load.image('firewood', 'firewood.png')
+        this.load.image('doll', 'doll.png')
+        this.load.image('fruitCan', 'fruitCan.png')
     }
 
     create(){
@@ -27,6 +29,15 @@ class LastScene extends Phaser.Scene {
         const trees = map3.createLayer('Trees', tileset, 0,0).setDepth(10);
 
         this.seita = this.physics.add.sprite(150,70, 'seita', 0);
+        this.seita.body.onCollide = true;
+
+        this.itemsCollected = 0
+
+        this.doll = this.physics.add.sprite(50, 70, 'doll', 0);
+        this.doll.setImmovable(true)
+        this.doll.body.setCollideWorldBounds(true)
+
+
 
         this.anims.create ({
             key: 'stand3',
@@ -54,7 +65,12 @@ class LastScene extends Phaser.Scene {
         this.physics.add.collider(this.seita, vertWall);
         this.physics.add.collider(this.seita, HorWall);
         this.physics.add.collider(this.seita, trees);
+        this.physics.add.collider(this.seita, this.doll);
 
+        this.dollText = this.add.text(30, 50, 'Press space to pick up doll', gameText)
+        this.dollText.visible = false
+        this.dollCollected = this.add.text(30,50, 'Doll Collected!', gameText)
+        this.dollCollected.visible = false
 
         //Make camera follow player
         this.cameras.main.setBounds(0,0, map3.widthInPixels, map3.heightInPixels);
@@ -97,5 +113,31 @@ class LastScene extends Phaser.Scene {
 
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+
+        if(this.distance(this.seita, this.doll) < 20){
+            this.dollText.visible = true
+            this.time.delayedCall(1500, () =>{
+
+                this.dollText.visible = false;
+
+            })
+            if(Phaser.Input.Keyboard.JustDown(this.cursors.space)){
+                this.itemsCollected += 1
+                this.dollText.destroy()
+                this.dollCollected.visible = true
+                this.doll.destroy()
+                this.time.delayedCall(1500, () =>{
+
+                    this.dollCollected.visible = false;
+    
+                })
+            }
+        }
+    }
+
+    distance(sprite1, sprite2){
+        
+        return Math.sqrt(Math.pow(sprite1.x - sprite2.x, 2) + Math.pow(sprite1.y - sprite2.y, 2));
+
     }
 }

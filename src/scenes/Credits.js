@@ -15,8 +15,11 @@ class Credits extends Phaser.Scene {
         this.add.text(15, 20, 'Movie: Grave of the Fireflies, Isao Takahata, Studio Ghibli, 1989', credText)
         this.add.text(15, 50, 'Tilemap sprites: https://kale-game.itch.io/2d-pixel-art Author: Kale Game', credText)
         this.add.text(15, 70, 'Other Sprites drawn by Lucas Lee', credText)
-        this.add.text(15, 90, 'Alarm sfx, 1st scene: https://www.youtube.com/watch?v=GToHq7YAq_g', credText)
+        this.add.text(15, 90, 'Alarm sfx, 1st scene: https://youtu.be/GToHq7YAq_g', credText)
         this.add.text(15,110, 'Author: All Sound Effects Music & Films', credText)
+        this.add.text(15, 130 ,'Item Pickup: https://youtu.be/shI-BL0y8Kg, Author: Joe King', credText)
+        this.add.text(15, 150, 'BGM scene 2: https://youtu.be/v5oGi6-ifdg, 00:00-03:00',credText)
+        this.add.text(15, 170, 'Angels Dream, Artist: Aakash Gandhi, https://youtu.be/GkZ0SZmJ7H4',credText)
 
         this.add.text(90, 200, 'Press B to go back to Main Menu', credText)
         

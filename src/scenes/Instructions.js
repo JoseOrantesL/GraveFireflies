@@ -16,8 +16,9 @@ class Instructions extends Phaser.Scene {
         this.add.text(25, 40,'Escape the town before its too late', subText)
         this.add.text(15, 70, 'Second Scene - Use arrow keys to move.', subText)
         this.add.text(25, 90, 'Look for Setsuko for further instructions', subText)
-        this.add.text(15, 120, 'Third Scene - Use arrow keys to move', subText)
-        this.add.text(25, 140, 'Space bar to Interact when needed', subText)
+        this.add.text(25, 110, 'Press space bar to deliver items to setsuko', subText)
+        this.add.text(15, 140, 'Third Scene - Use arrow keys to move', subText)
+        this.add.text(25, 160, 'Space bar to Interact when needed', subText)
 
 
 

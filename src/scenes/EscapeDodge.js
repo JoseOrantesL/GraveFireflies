@@ -31,7 +31,7 @@ class EscapeDodge extends Phaser.Scene {
     }
 
     create(){
-        keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); //This is my skip key
+        //create sound fx for this scene
         this.alarm = this.sound.add('alarm', {volume: 0.1, loop: true});
         this.alarm.play();
 
@@ -106,11 +106,7 @@ class EscapeDodge extends Phaser.Scene {
         this.physics.add.collider(this.seita, fence);
         this.physics.add.collider(this.seita, houses);
         this.physics.add.collider(this.seita, this.check);
-        //this.physics.add.collider(this.seita, this.fire);
-       // this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>
-        //{
-        //    this.scene.start('gameOverScene')
-       // });
+        
         
         //Setup camera to follow the player
         this.cameras.main.setBounds(0,0, map1.widthInPixels, map1.heightInPixels);
@@ -120,6 +116,7 @@ class EscapeDodge extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        //spawn a bomb randomly after every half second
         this.time.addEvent({delay:500, callback: this.spawnBomb, callbackScope:this, loop:true})
         
         //Create group to add bombs
@@ -181,6 +178,7 @@ class EscapeDodge extends Phaser.Scene {
         this.direction.normalize();
         this.seita.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
 
+        //check for collision between player and explosion and fire
         this.physics.world.collide(this.seita, this.explosionGroup, this.collided, null, this)
         this.physics.world.collide(this.seita, this.fireGroup, this.collided, null, this)
 
@@ -196,13 +194,13 @@ class EscapeDodge extends Phaser.Scene {
         this.bombx = Phaser.Math.Between(1,630)
         this.bomby = Phaser.Math.Between(1,450)
     }
-
+    //spawn fire on top of explosion after explosion animation finishes
     spawnFire(x, y){
         let fire = new Fire(this, x, y)
         this.fireGroup.add(fire)
         fire.play('fire1')
     }
-
+    //if player touches explosion or fire switch to game over
     collided(){
         this.alarm.stop()
         this.scene.start('gameOverScene')

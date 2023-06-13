@@ -27,7 +27,8 @@ class FarmerDodge extends Phaser.Scene {
     }
 
     create(){
-        this.farm = this.sound.add("farm", {volume: 0.1, loop: true});
+        this.farm = this.sound.add("farm", {volume: 0.05, loop: true});
+        this.farm.play();
         this.gotCarrot = false;
         this.gotLettuce = false;
         this.gotPome = false;

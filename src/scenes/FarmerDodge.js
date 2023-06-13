@@ -289,6 +289,7 @@ class FarmerDodge extends Phaser.Scene {
 
         if(seita.body.checkWorldBounds()){
 
+            this.farm.stop();
             this.scene.start('transitionScene');
 
         }

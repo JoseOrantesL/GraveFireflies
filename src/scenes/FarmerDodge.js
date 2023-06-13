@@ -48,8 +48,8 @@ class FarmerDodge extends Phaser.Scene {
         this.potato = map.createLayer('Potato', tileset, 0,0);
 
         //add sprites
-        //seita = this.physics.add.sprite(50,450, 'seita', 0);
-        seita = this.physics.add.sprite(540,450, 'seita', 0);
+        seita = this.physics.add.sprite(50,450, 'seita', 0);
+        //seita = this.physics.add.sprite(540,450, 'seita', 0);
         this.setsuko = this.physics.add.sprite(530, 440, 'setsuko',0);
         this.farmer = this.physics.add.sprite(138, 210, 'farmer', 0);
         this.farmer2 = this.physics.add.sprite(445, 210, 'farmer', 0);
@@ -131,6 +131,9 @@ class FarmerDodge extends Phaser.Scene {
         this.texty = this.add.text(450, 410, 'I\'m hungry! Can you get me some food?', gameText)
         this.texty.visible = false
 
+        this.check = this.add.text(150, 0, 'I can only carry one at a time', gameText);
+        this.check.visible = false;
+
         this.reply = this.add.text(450,420, 'Can you get me some more?', gameText);
         this.reply.visible = false;
 
@@ -162,8 +165,16 @@ class FarmerDodge extends Phaser.Scene {
         this.physics.add.collider(seita, this.walls);
             //Carrot collision
         this.physics.add.collider(seita, carrots, () => {
+            if(!this.triggered && !this.gotCarrot){
+                
+                this.check.visible = true;
+                this.time.delayedCall(2000, () => {
+                
+                    this.check.visible = false;
 
-            if(this.gotCarrot == false){
+                }, null, this); 
+
+            } else if(!this.gotCarrot){
                 this.carrotText.visible = true;
                 this.time.delayedCall(2000, () => {
                 
@@ -177,7 +188,16 @@ class FarmerDodge extends Phaser.Scene {
             //lettuce collision
         this.physics.add.collider(seita, this.lettuce, () =>{
 
-            if(!this.gotLettuce){
+            if(!this.triggered && !this.gotLettuce){
+
+                this.check.visible = true;
+                this.time.delayedCall(2000, () => {
+                
+                    this.check.visible = false;
+
+                }, null, this); 
+
+            } else if(!this.gotLettuce){
                 this.lettuceText.visible = true;
                 this.time.delayedCall(1500, () => {
                 
@@ -189,19 +209,36 @@ class FarmerDodge extends Phaser.Scene {
         });
         
         this.physics.add.collider(seita, this.pome, () =>{
-            if(!this.gotPome){
-                this.pomeText.visible = true;
-                this.time.delayedCall(1500, () => {
-                
-                    this.pomeText.visible = false;
+                if(!this.triggered && !this.gotPome){
 
-                }, null, this);
+                    this.check.visible = true;
+                    this.time.delayedCall(2000, () => {
+                    
+                        this.check.visible = false;
+
+                    }, null, this); 
+
+                } else if(!this.gotPome){
+                    this.pomeText.visible = true;
+                    this.time.delayedCall(1500, () => {
+                
+                        this.pomeText.visible = false;
+
+                    }, null, this);
             }
         });
 
         this.physics.add.collider(seita, this.potato, ()=> {
+            if(!this.triggered && !this.gotPotato){
 
-            if(!this.gotPotato){
+                this.check.visible = true;
+                this.time.delayedCall(2000, () => {
+                
+                    this.check.visible = false;
+
+                }, null, this); 
+
+            } else if(!this.gotPotato){
                 this.potatoText.visible = true;
                 this.time.delayedCall(1500, () => {
                 
@@ -245,6 +282,9 @@ class FarmerDodge extends Phaser.Scene {
     }
 
     update(){
+
+        this.check.x = seita.body.x -50;
+        this.check.y = seita.body.y + 10;
 
         if(seita.body.checkWorldBounds()){
 

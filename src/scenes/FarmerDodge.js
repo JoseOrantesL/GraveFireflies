@@ -23,11 +23,12 @@ class FarmerDodge extends Phaser.Scene {
         this.load.image('tilemapImage', 'tilemap2.png');
 
         this.load.tilemapTiledJSON('JSONmap', 'map02.json');
-
+        this.load.audio("farm", "farm.mp3");
     }
 
     create(){
-        
+        this.farm = this.sound.add("farm", {volume: 0.05, loop: true});
+        this.farm.play();
         this.gotCarrot = false;
         this.gotLettuce = false;
         this.gotPome = false;
@@ -263,7 +264,7 @@ class FarmerDodge extends Phaser.Scene {
         this.physics.add.collider(seita, this.farmer2)
 
         this.physics.world.on('overlap', (gameObject1, gameObject2, body1, body2) => {
-            
+            this.farm.stop();
             this.scene.start("gameOverScene2");
             
 

@@ -137,7 +137,7 @@ class FarmerDodge extends Phaser.Scene {
         this.reply = this.add.text(450,420, 'Can you get me some more?', gameText);
         this.reply.visible = false;
 
-        this.finished = this.add.text(450,420, 'this is done', gameText);
+        this.finished = this.add.text(450,420, 'Proceed to next area', gameText);
         this.finished.visible = false;
 
         this.carrotText = this.add.text(20, 0, "Press Space to Pick Up Carrots", gameText);
@@ -288,7 +288,7 @@ class FarmerDodge extends Phaser.Scene {
 
         if(seita.body.checkWorldBounds()){
 
-            this.scene.start('lastScene');
+            this.scene.start('transitionScene');
 
         }
         

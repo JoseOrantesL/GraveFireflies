@@ -57,6 +57,7 @@ class LastScene extends Phaser.Scene {
 
         this.coffin = this.physics.add.sprite(355, 290, 'coffin', 0);
         this.coffin.setImmovable(true);
+
         this.anims.create ({
             key: 'stand3',
             frameRate: 8,
@@ -117,12 +118,10 @@ class LastScene extends Phaser.Scene {
         this.physics.add.collider(this.seita, trees);
         this.physics.add.collider(this.seita, this.doll)
         this.physics.add.collider(this.seita, this.wood)
-        this.physics.add.collider(this.seita, this.fire3)
 
         this.physics.add.collider(this.seita, this.coffin, ()=>{
-
+            
             if(this.itemsCollected != 3){
-
                 this.coffinText.visible = true;
                 this.time.delayedCall(2000, () =>{
                     this.coffinText.visible = false;
@@ -136,8 +135,6 @@ class LastScene extends Phaser.Scene {
                 })
             } 
         })
-
-
 
         //Make camera follow player
         this.cameras.main.setBounds(0,0, map3.widthInPixels, map3.heightInPixels);

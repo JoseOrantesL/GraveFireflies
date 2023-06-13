@@ -6,12 +6,14 @@ class GameOver2 extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('screen', './assets/caught.png')
+        this.load.image('caught', './assets/caught.png')
     }
     create(){
-        this.bg = this.add.image(gameWidth/2, gameHeight/2, 'screen').setOrigin(0)
-        this.add.text(100,50,'Game Over',menuText)
-        this.add.text(100, 150, 'Press R to Restart', subText)
+        this.bg = this.add.image(gameWidth/2, gameHeight/2, 'caught').setOrigin(0)
+        this.add.text(25,50,'Game Over',menuText)
+        this.add.text(25, 100, 'You were spotted by the farmer', subText)
+        this.add.text(25,125, 'try to run behind his back next time', subText)
+        this.add.text(25, 200, 'Press R to Restart', subText)
 
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
 
